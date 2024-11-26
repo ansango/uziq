@@ -10,7 +10,8 @@ import type {
 	TrackSearchRequest,
 	TrackSearchResponse
 } from './track.types';
-import { buildUrl, fetcher, method } from '../utils';
+import { fetcher } from '$lib/utils';
+import { buildUrl, method } from '..';
 
 export type TrackApiMethods = {
 	/**
@@ -63,13 +64,13 @@ export type TrackApiMethods = {
 
 export const trackApiMethods: TrackApiMethods = {
 	getInfo: (params, init) =>
-		fetcher<TrackGetInfoResponse>(buildUrl(method.track.getInfo, params), init),
+		fetcher<TrackGetInfoResponse>()(buildUrl(method.track.getInfo, params), init),
 	getSimilar: (params, init) =>
-		fetcher<TrackGetSimilarResponse>(buildUrl(method.track.getSimilar, params), init),
+		fetcher<TrackGetSimilarResponse>()(buildUrl(method.track.getSimilar, params), init),
 	getTags: (params, init) =>
-		fetcher<TrackGetTagsResponse>(buildUrl(method.track.getTags, params), init),
+		fetcher<TrackGetTagsResponse>()(buildUrl(method.track.getTags, params), init),
 	getTopTags: (params, init) =>
-		fetcher<TrackGetTopTagsResponse>(buildUrl(method.track.getTopTags, params), init),
+		fetcher<TrackGetTopTagsResponse>()(buildUrl(method.track.getTopTags, params), init),
 	search: (params, init) =>
-		fetcher<TrackSearchResponse>(buildUrl(method.track.search, params), init)
+		fetcher<TrackSearchResponse>()(buildUrl(method.track.search, params), init)
 };

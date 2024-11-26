@@ -1,23 +1,5 @@
-import {
-	LASTFM_API_BASE_URL,
-	LASTFM_API_KEY,
-	LASTFM_APPNAME,
-	LASTFM_SHARED_SECRET,
-	LASTFM_USER
-} from '$env/static/private';
-import { generateMd5 } from './generate-md5';
-
-const config = {
-	api_key: LASTFM_API_KEY,
-	app_name: LASTFM_APPNAME,
-	base_url: LASTFM_API_BASE_URL,
-	format: {
-		json: 'json',
-		xml: 'xml'
-	},
-	share_secret: LASTFM_SHARED_SECRET,
-	username: LASTFM_USER
-};
+import { config } from './config';
+import { generateMd5 } from '../utils/generate-md5';
 
 export const method = {
 	user: {
@@ -103,6 +85,6 @@ export const generateApiSignature = (params: Record<string, string | number | un
 	const paramKeysSig = Object.keys(params)
 		.sort()
 		.reduce((acc: string, key: string) => `${acc}${key}${params[key]}`, '');
-	const partialApiSig = `${paramKeysSig}${LASTFM_SHARED_SECRET}`;
+	const partialApiSig = `${paramKeysSig}${config.share_secret}`;
 	return generateMd5(partialApiSig);
 };

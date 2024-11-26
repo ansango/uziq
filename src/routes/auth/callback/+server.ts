@@ -1,8 +1,8 @@
 import { LASTFM_API_KEY } from '$env/static/private';
-import { authApiMethods } from '$lib/services';
-import { redirect } from '@sveltejs/kit';
+import { authApiMethods } from '$lib/lastfm/services';
+import { redirect, type RequestHandler } from '@sveltejs/kit';
 
-export const GET = async ({ url, cookies }) => {
+export const GET: RequestHandler = async ({ url, cookies }) => {
 	const token = url.searchParams.get('token');
 	if (token) {
 		const response = await authApiMethods.getSession({

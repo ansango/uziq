@@ -6,7 +6,9 @@ import type {
 	ChartGetTopTracksRequest,
 	ChartGetTopTracksResponse
 } from './chart.types';
-import { buildUrl, fetcher, method } from '../utils';
+
+import { fetcher } from '$lib/utils';
+import { buildUrl, method } from '..';
 
 export type ChartApiMethods = {
 	/**
@@ -46,9 +48,9 @@ export type ChartApiMethods = {
 
 export const chartApiMethods: ChartApiMethods = {
 	getTopArtists: (params, init) =>
-		fetcher<ChartGetTopArtistsResponse>(buildUrl(method.chart.getTopArtists, params), init),
+		fetcher<ChartGetTopArtistsResponse>()(buildUrl(method.chart.getTopArtists, params), init),
 	getTopTags: (params, init) =>
-		fetcher<ChartGetTopTagsResponse>(buildUrl(method.chart.getTopTags, params), init),
+		fetcher<ChartGetTopTagsResponse>()(buildUrl(method.chart.getTopTags, params), init),
 	getTopTracks: (params, init) =>
-		fetcher<ChartGetTopTracksResponse>(buildUrl(method.chart.getTopTracks, params), init)
+		fetcher<ChartGetTopTracksResponse>()(buildUrl(method.chart.getTopTracks, params), init)
 };

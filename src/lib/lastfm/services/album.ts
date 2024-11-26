@@ -1,4 +1,5 @@
-import { fetcher, buildUrl, method } from '$lib/utils';
+import { fetcher } from '$lib/utils';
+import { buildUrl, method } from '..';
 import type {
 	AlbumGetInfoRequest,
 	AlbumGetInfoResponse,
@@ -50,11 +51,11 @@ export type AlbumApiMethods = {
 
 export const albumApiMethods: AlbumApiMethods = {
 	getInfo: (params, init) =>
-		fetcher<AlbumGetInfoResponse>(buildUrl(method.album.getInfo, params), init),
+		fetcher<AlbumGetInfoResponse>()(buildUrl(method.album.getInfo, params), init),
 	getTags: (params, init) =>
-		fetcher<AlbumGetTagsResponse>(buildUrl(method.album.getTags, params), init),
+		fetcher<AlbumGetTagsResponse>()(buildUrl(method.album.getTags, params), init),
 	getTopTags: (params, init) =>
-		fetcher<AlbumGetTopTagsResponse>(buildUrl(method.album.getTopTags, params), init),
+		fetcher<AlbumGetTopTagsResponse>()(buildUrl(method.album.getTopTags, params), init),
 	search: (params, init) =>
-		fetcher<AlbumSearchResponse>(buildUrl(method.album.search, params), init)
+		fetcher<AlbumSearchResponse>()(buildUrl(method.album.search, params), init)
 };

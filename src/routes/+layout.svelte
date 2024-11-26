@@ -10,6 +10,11 @@
 
 <QueryClientProvider client={data.queryClient}>
 	<header>
+		<nav>
+			<a href="/">Home</a>
+
+			<a href="/profile">Profile</a>
+		</nav>
 		{#if data.session}
 			<form method="POST" action="/auth?/logout">
 				<button type="submit">Logout</button>

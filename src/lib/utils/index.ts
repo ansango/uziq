@@ -1,2 +1,2 @@
 export * from './fetcher';
-export * from './lastfm';
+export * from './query-client-api';

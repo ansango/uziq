@@ -14,8 +14,8 @@ import type {
 	TagGetWeeklyChartListRequest,
 	TagGetWeeklyChartListResponse
 } from './tag.types';
-
-import { fetcher, buildUrl, method } from '../utils';
+import { fetcher } from '$lib/utils';
+import { buildUrl, method } from '..';
 
 export type TagApiMethods = {
 	/**
@@ -90,17 +90,17 @@ export type TagApiMethods = {
 
 export const tagApiMethods: TagApiMethods = {
 	getInfo: (params, init) =>
-		fetcher<TagGetInfoResponse>(buildUrl(method.tag.getInfo, params), init),
+		fetcher<TagGetInfoResponse>()(buildUrl(method.tag.getInfo, params), init),
 	getSimilar: (params, init) =>
-		fetcher<TagGetSimilarResponse>(buildUrl(method.tag.getSimilar, params), init),
+		fetcher<TagGetSimilarResponse>()(buildUrl(method.tag.getSimilar, params), init),
 	getTopAlbums: (params, init) =>
-		fetcher<TagGetTopAlbumsResponse>(buildUrl(method.tag.getTopAlbums, params), init),
+		fetcher<TagGetTopAlbumsResponse>()(buildUrl(method.tag.getTopAlbums, params), init),
 	getTopArtists: (params, init) =>
-		fetcher<TagGetTopArtistsResponse>(buildUrl(method.tag.getTopArtists, params), init),
+		fetcher<TagGetTopArtistsResponse>()(buildUrl(method.tag.getTopArtists, params), init),
 	getTopTags: (params, init) =>
-		fetcher<TagGetTopTagsResponse>(buildUrl(method.tag.getTopTags, params), init),
+		fetcher<TagGetTopTagsResponse>()(buildUrl(method.tag.getTopTags, params), init),
 	getTopTracks: (params, init) =>
-		fetcher<TagGetTopTracksResponse>(buildUrl(method.tag.getTopTracks, params), init),
+		fetcher<TagGetTopTracksResponse>()(buildUrl(method.tag.getTopTracks, params), init),
 	getWeeklyChartList: (params, init) =>
-		fetcher<TagGetWeeklyChartListResponse>(buildUrl(method.tag.getWeeklyChartList, params), init)
+		fetcher<TagGetWeeklyChartListResponse>()(buildUrl(method.tag.getWeeklyChartList, params), init)
 };

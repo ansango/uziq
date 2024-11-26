@@ -1,6 +1,6 @@
 import type { LibraryGetArtistsRequest, LibraryGetArtistsResponse } from './library.types';
-
-import { fetcher, buildUrl, method } from '../utils';
+import { fetcher } from '$lib/utils';
+import { buildUrl, method } from '..';
 
 export type LibraryApiMethods = {
 	/**
@@ -18,5 +18,5 @@ export type LibraryApiMethods = {
 
 export const libraryApiMethods: LibraryApiMethods = {
 	getArtists: (params, init) =>
-		fetcher<LibraryGetArtistsResponse>(buildUrl(method.library.getArtists, params), init)
+		fetcher<LibraryGetArtistsResponse>()(buildUrl(method.library.getArtists, params), init)
 };
