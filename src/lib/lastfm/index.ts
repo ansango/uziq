@@ -41,7 +41,8 @@ export const method = {
 		getSimilar: 'track.getSimilar',
 		getTags: 'track.getTags',
 		getTopTags: 'track.getTopTags',
-		search: 'track.search'
+		search: 'track.search',
+		scrobble: 'track.scrobble'
 	},
 	tag: {
 		getInfo: 'tag.getInfo',

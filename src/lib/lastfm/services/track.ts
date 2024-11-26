@@ -7,11 +7,14 @@ import type {
 	TrackGetTagsResponse,
 	TrackGetTopTagsRequest,
 	TrackGetTopTagsResponse,
+	TrackScrobbleRequest,
+	TrackScrobbleResponse,
 	TrackSearchRequest,
 	TrackSearchResponse
 } from './track.types';
 import { fetcher } from '$lib/utils';
-import { buildUrl, method } from '..';
+import { buildUrl, generateApiSignature, method } from '..';
+import { LASTFM_API_KEY } from '$env/static/private';
 
 export type TrackApiMethods = {
 	/**
@@ -60,6 +63,10 @@ export type TrackApiMethods = {
 	 * https://www.last.fm/api/show/track.search
 	 * */
 	search: (params: TrackSearchRequest, init?: RequestInit) => Promise<TrackSearchResponse>;
+	postTrackScrobble: (
+		params: TrackScrobbleRequest,
+		init?: RequestInit
+	) => Promise<TrackScrobbleResponse>;
 };
 
 export const trackApiMethods: TrackApiMethods = {
@@ -72,5 +79,19 @@ export const trackApiMethods: TrackApiMethods = {
 	getTopTags: (params, init) =>
 		fetcher<TrackGetTopTagsResponse>()(buildUrl(method.track.getTopTags, params), init),
 	search: (params, init) =>
-		fetcher<TrackSearchResponse>()(buildUrl(method.track.search, params), init)
+		fetcher<TrackSearchResponse>()(buildUrl(method.track.search, params), init),
+	postTrackScrobble: ({ artist, sk, timestamp, track, album }, init) => {
+		const paramsUrl = album
+			? { artist, track, timestamp, sk, album }
+			: ({ artist, track, timestamp, sk } as TrackScrobbleRequest);
+		const api_sig = generateApiSignature({
+			method: method.track.scrobble,
+			api_key: LASTFM_API_KEY,
+			...paramsUrl
+		});
+		return fetcher<TrackScrobbleResponse>()(
+			buildUrl(method.track.scrobble, { ...paramsUrl, api_sig }),
+			{ ...init, method: 'POST' }
+		);
+	}
 };

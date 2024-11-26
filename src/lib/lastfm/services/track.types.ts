@@ -183,3 +183,38 @@ export type TrackSearchResponse = {
 		};
 	};
 };
+
+export type TrackScrobbleRequest = {
+	artist: ArtistName;
+	track: TrackName;
+	timestamp: string;
+	sk: string;
+	album?: AlbumName;
+};
+export type TrackScrobbleResponse = {
+	scrobbles: {
+		scrobble: {
+			artist: {
+				corrected: string;
+				'#text': ArtistName;
+			};
+			album: {
+				corrected: string;
+			};
+			track: {
+				corrected: string;
+				'#text': TrackName;
+			};
+			ignoredMessage: { code: string; '#text': string };
+			albumArtist: {
+				corrected: string;
+				'#text': AlbumName;
+			};
+			timestamp: string;
+		};
+		'@attr': {
+			accepted: number;
+			ignored: number;
+		};
+	};
+};

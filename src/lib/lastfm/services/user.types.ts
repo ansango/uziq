@@ -123,6 +123,10 @@ export type RecentTracks = {
 			mbid: Mbid;
 			'#text': ArtistName;
 		};
+		album: {
+			mbid: Mbid;
+			'#text': AlbumName;
+		};
 		date?: DateProp;
 		name: TrackName;
 		mbid: Mbid;

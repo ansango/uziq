@@ -14,6 +14,7 @@
 			<a href="/">Home</a>
 
 			<a href="/profile">Profile</a>
+			<a href="/track">Tracks</a>
 		</nav>
 		{#if data.session}
 			<form method="POST" action="/auth?/logout">

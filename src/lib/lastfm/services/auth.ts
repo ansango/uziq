@@ -1,4 +1,5 @@
 import { fetcher } from '$lib/utils';
+
 import { buildUrl, method, generateApiSignature } from '..';
 import type { AuthGetSessionRequest, AuthGetSessionResponse } from './auth.types';
 
@@ -10,7 +11,7 @@ export type AuthApiMethods = {
 };
 
 export const authApiMethods: AuthApiMethods = {
-	getSession: (params, init) =>
+	getSession: async (params, init) =>
 		fetcher<AuthGetSessionResponse>()(
 			buildUrl(method.auth.getSession, {
 				...params,
