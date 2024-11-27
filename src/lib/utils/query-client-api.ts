@@ -9,8 +9,8 @@ export const clientApi = (customFetch = fetch) => ({
 		queryKey: ['profile'],
 		queryFn: () => fetcher<UserGetInfoResponse>(customFetch)('/profile')
 	},
-	getTracks: {
-		queryKey: ['tracks'],
+	getRecentTracks: {
+		queryKey: ['recent-tracks'],
 		queryFn: () =>
 			fetcher<UserGetRecentTracksResponse['recenttracks']['track']>(customFetch)('/track')
 	}

@@ -2,7 +2,7 @@
 	import { createQuery } from '@tanstack/svelte-query';
 	import { clientApi } from '$lib';
 	const {
-		getTracks: { queryFn, queryKey }
+		getRecentTracks: { queryFn, queryKey }
 	} = clientApi();
 	const tracks = createQuery({
 		queryKey,

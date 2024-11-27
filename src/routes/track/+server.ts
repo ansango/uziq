@@ -1,7 +1,7 @@
 import { trackApiMethods, userApiMethods } from '$lib/lastfm/services';
 import { json, type RequestHandler } from '@sveltejs/kit';
 
-export const GET: RequestHandler = async ({ cookies }) => {
+export const POST: RequestHandler = async ({ cookies }) => {
 	const session = cookies.get('session');
 	const user = cookies.get('user');
 
@@ -16,7 +16,7 @@ export const GET: RequestHandler = async ({ cookies }) => {
 	return json(track, { status: 200 });
 };
 
-export const POST: RequestHandler = async ({ cookies }) => {
+export const GET: RequestHandler = async ({ cookies }) => {
 	const session = cookies.get('session');
 	if (!session) {
 		return json({ error: 'Session not found' }, { status: 404 });
@@ -27,12 +27,30 @@ export const POST: RequestHandler = async ({ cookies }) => {
 	const album = 'Young Team (Deluxe Edition)';
 	const timestamp = Math.floor(Date.now() / 1000).toString();
 
-	const response = await trackApiMethods.postTrackScrobble({
-		artist,
-		track,
-		timestamp,
-		sk,
-		album
+	// const response = await trackApiMethods.postTrackScrobble({
+	// 	artist,
+	// 	track,
+	// 	timestamp,
+	// 	sk,
+	// 	album
+	// });
+
+	const response = await trackApiMethods.postBatchTrackScrobble({
+		tracks: [
+			{
+				artist,
+				track,
+				timestamp,
+				album
+			},
+			{
+				artist: 'Pink Floyd',
+				track: 'Time',
+				timestamp: Math.floor(Date.now() / 1000).toString(),
+				album: 'The Dark Side of the Moon'
+			}
+		],
+		sk
 	});
 
 	return json(response, { status: 200 });

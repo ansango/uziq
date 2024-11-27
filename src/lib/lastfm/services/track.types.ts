@@ -218,3 +218,8 @@ export type TrackScrobbleResponse = {
 		};
 	};
 };
+
+export type BatchTracksScrobbleRequest = {
+	tracks: Array<Omit<TrackScrobbleRequest, 'sk'>>;
+	sk: string;
+};

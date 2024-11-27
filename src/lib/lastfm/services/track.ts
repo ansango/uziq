@@ -1,4 +1,5 @@
 import type {
+	BatchTracksScrobbleRequest,
 	TrackGetInfoRequest,
 	TrackGetInfoResponse,
 	TrackGetSimilarRequest,
@@ -13,8 +14,9 @@ import type {
 	TrackSearchResponse
 } from './track.types';
 import { fetcher } from '$lib/utils';
-import { buildUrl, generateApiSignature, method } from '..';
-import { LASTFM_API_KEY } from '$env/static/private';
+import { buildUrl, method } from '..';
+
+import { batchFetcher, parsePostParamsBatchTrack, parsePostParamsTrack } from './track.utils';
 
 export type TrackApiMethods = {
 	/**
@@ -63,10 +65,26 @@ export type TrackApiMethods = {
 	 * https://www.last.fm/api/show/track.search
 	 * */
 	search: (params: TrackSearchRequest, init?: RequestInit) => Promise<TrackSearchResponse>;
+
+	/**
+	 * Scrobble a track. Submits a track play to the Last.fm
+	 * @param {TrackScrobbleRequest} params
+	 * @param {RequestInit} init
+	 * @returns {Promise<TrackScrobbleResponse>}
+	 * https://www.last.fm/api/show/track.scrobble
+	 */
+
 	postTrackScrobble: (
 		params: TrackScrobbleRequest,
 		init?: RequestInit
 	) => Promise<TrackScrobbleResponse>;
+	/**
+	 * Scrobble a batch of tracks. Submits a batch of track plays to the Last.fm
+	 * @param {BatchTracksScrobbleRequest} params
+	 * @returns {Promise<boolean>}
+	 * https://www.last.fm/api/show/track.scrobble
+	 * */
+	postBatchTrackScrobble: (params: BatchTracksScrobbleRequest) => Promise<boolean>;
 };
 
 export const trackApiMethods: TrackApiMethods = {
@@ -80,18 +98,16 @@ export const trackApiMethods: TrackApiMethods = {
 		fetcher<TrackGetTopTagsResponse>()(buildUrl(method.track.getTopTags, params), init),
 	search: (params, init) =>
 		fetcher<TrackSearchResponse>()(buildUrl(method.track.search, params), init),
-	postTrackScrobble: ({ artist, sk, timestamp, track, album }, init) => {
-		const paramsUrl = album
-			? { artist, track, timestamp, sk, album }
-			: ({ artist, track, timestamp, sk } as TrackScrobbleRequest);
-		const api_sig = generateApiSignature({
-			method: method.track.scrobble,
-			api_key: LASTFM_API_KEY,
-			...paramsUrl
-		});
-		return fetcher<TrackScrobbleResponse>()(
-			buildUrl(method.track.scrobble, { ...paramsUrl, api_sig }),
-			{ ...init, method: 'POST' }
-		);
-	}
+	postTrackScrobble: ({ artist, sk, timestamp, track, album }, init) =>
+		fetcher<TrackScrobbleResponse>()(
+			buildUrl(method.track.scrobble, {
+				...parsePostParamsTrack({ artist, sk, timestamp, track, album })
+			}),
+			{
+				...init,
+				method: 'POST'
+			}
+		),
+	postBatchTrackScrobble: async ({ tracks, sk }) =>
+		batchFetcher({ body: parsePostParamsBatchTrack({ tracks, sk }) })
 };
