@@ -4,29 +4,13 @@
 	import { SvelteQueryDevtools } from '@tanstack/svelte-query-devtools';
 	import { type LayoutData } from './$types';
 	import type { Snippet } from 'svelte';
+	import Header from '$lib/components/layout/header.svelte';
 
 	let { children, data }: { children: Snippet; data: LayoutData } = $props();
 </script>
 
 <QueryClientProvider client={data.queryClient}>
-	<header>
-		<nav>
-			<a href="/">Home</a>
-
-			<a href="/profile">Profile</a>
-			<a href="/track">Tracks</a>
-			<a href="/release">Vinyls</a>
-		</nav>
-		{#if data.lastfmSession}
-			<form method="POST" action="/auth?/logout">
-				<button type="submit">Logout</button>
-			</form>
-		{:else}
-			<form method="POST" action="/auth?/login">
-				<button type="submit">Login</button>
-			</form>
-		{/if}
-	</header>
+	<Header discogsUser={data.discogsUser} lastfmSession={data.lastfmSession} />
 
 	{@render children()}
 
