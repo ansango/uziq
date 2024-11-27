@@ -7,15 +7,24 @@
 
 <header class="flex justify-between p-5">
 	<nav class="space-x-5">
-		<a href="/">Home</a>
+		<a href="/" class="text-lg font-semibold italic tracking-wider">uziq</a>
 
 		{#if lastfmSession}
-			<a href="/profile">Profile</a>
-			<a href="/track">Tracks</a>
+			<a
+				class="font-medium italic tracking-widest hover:underline hover:underline-offset-2"
+				href="/profile">profile</a
+			>
+			<a
+				class="font-medium italic tracking-widest hover:underline hover:underline-offset-2"
+				href="/track">tracks</a
+			>
 		{/if}
 
 		{#if discogsUser && lastfmSession}
-			<a href="/release">Vinyls</a>
+			<a
+				class="font-medium italic tracking-widest hover:underline hover:underline-offset-2"
+				href="/release">vinyls</a
+			>
 		{/if}
 	</nav>
 	{#if lastfmSession}

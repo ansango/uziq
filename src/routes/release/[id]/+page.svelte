@@ -11,7 +11,6 @@
 		queryKey: queryKey(data.id),
 		queryFn: () => queryFn(data.id),
 		enabled: !!data.id,
-		// replace content with (number) in titles
 		select: (data) => ({ ...data, artist: data.artists[0].name.replace(/\(\d+\)/g, '').trim() })
 	});
 
