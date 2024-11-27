@@ -2,6 +2,7 @@
 	import { clientApi } from '$lib';
 	import { createQuery } from '@tanstack/svelte-query';
 	import type { PageData } from '../$types';
+	import Auth from '$lib/components/auth/auth.form.svelte';
 
 	let { data }: { data: PageData } = $props();
 
@@ -32,11 +33,7 @@
 {/if}
 
 {#if data.discogsUser}
-	<form method="POST" action="/auth?/logout-discogs">
-		<button type="submit">Logout discogs</button>
-	</form>
+	<Auth action="logout" provider="discogs">Logout Discogs</Auth>
 {:else}
-	<form method="POST" action="/auth?/login-discogs">
-		<button type="submit">Login Discogs</button>
-	</form>
+	<Auth action="login" provider="discogs">Login Discogs</Auth>
 {/if}

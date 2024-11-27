@@ -19,8 +19,8 @@
 		{/if}
 	</nav>
 	{#if lastfmSession}
-		<Login />
-	{:else}
 		<Logout />
+	{:else}
+		<Login />
 	{/if}
 </header>
