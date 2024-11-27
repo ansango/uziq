@@ -1,5 +1,4 @@
 import { config } from './config';
-import { generateMd5 } from '../utils/generate-md5';
 
 export const method = {
 	user: {
@@ -80,12 +79,4 @@ export const buildUrl = (method: string, params: { [key: string]: string | numbe
 	const format = config.format.json;
 
 	return `${url.toString()}&api_key=${api_key}&format=${format}`;
-};
-
-export const generateApiSignature = (params: Record<string, string | number | undefined>) => {
-	const paramKeysSig = Object.keys(params)
-		.sort()
-		.reduce((acc: string, key: string) => `${acc}${key}${params[key]}`, '');
-	const partialApiSig = `${paramKeysSig}${config.share_secret}`;
-	return generateMd5(partialApiSig);
 };

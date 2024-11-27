@@ -2,8 +2,7 @@ import {
 	LASTFM_API_BASE_URL,
 	LASTFM_API_KEY,
 	LASTFM_APPNAME,
-	LASTFM_SHARED_SECRET,
-	LASTFM_USER
+	LASTFM_SHARED_SECRET
 } from '$env/static/private';
 
 export const config = {
@@ -14,6 +13,5 @@ export const config = {
 		json: 'json',
 		xml: 'xml'
 	},
-	share_secret: LASTFM_SHARED_SECRET,
-	username: LASTFM_USER
+	share_secret: LASTFM_SHARED_SECRET
 };
