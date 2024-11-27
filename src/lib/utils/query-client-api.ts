@@ -14,8 +14,17 @@ export const clientApi = (customFetch = fetch) => ({
 		queryFn: () =>
 			fetcher<UserGetRecentTracksResponse['recenttracks']['track']>(customFetch)('/track')
 	},
-	getVinyls: {
-		queryKey: ['vinyls'],
-		queryFn: () => fetcher(customFetch)('/vinyls')
+	getReleases: {
+		queryKey: ['releases'],
+		queryFn: () => fetcher(customFetch)('/release')
+	},
+	getRelease: {
+		queryKey: (id: string) => ['release', id],
+		queryFn: (id: string) => fetcher(customFetch)(`/release/${id}`)
+	},
+	postBatchTrackScrobble: {
+		queryKey: (id: string) => ['batch-track-scrobble', id],
+		queryFn: (id: string, data: any) =>
+			fetcher(customFetch)(`/release/${id}`, { method: 'POST', body: JSON.stringify(data) })
 	}
 });

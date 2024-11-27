@@ -2,7 +2,7 @@
 	import { createQuery } from '@tanstack/svelte-query';
 	import { clientApi } from '$lib';
 	const {
-		getVinyls: { queryFn, queryKey }
+		getReleases: { queryFn, queryKey }
 	} = clientApi();
 
 	const vinyls = createQuery({
@@ -37,11 +37,7 @@
 		{:else}
 			{#each $vinyls.data.vinyls as vinyl}
 				<li>
-					<a
-						href={`https://www.discogs.com/release/${vinyl.id}`}
-						target="_blank"
-						rel="noopener noreferrer"
-					>
+					<a href={`/release/${vinyl.id}`}>
 						{vinyl.title} - {vinyl.artist} - {vinyl.year}
 					</a>
 					<img width="256" height="256" src={vinyl.cover_image} alt="thumb" />
