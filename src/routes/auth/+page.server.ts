@@ -14,8 +14,7 @@ export const actions = {
 		redirect(302, '/');
 	},
 	'login-discogs': async ({ cookies }) => {
-		const response = await authApiMethods.getToken();
-		const [oauth_token, oauth_token_secret] = response.split('&').map((item) => item.split('=')[1]);
+		const { oauth_token, oauth_token_secret } = await authApiMethods.getToken();
 		cookies.set('oauth_token_secret', oauth_token_secret, { path: '/' });
 		cookies.set('oauth_token', oauth_token, { path: '/' });
 

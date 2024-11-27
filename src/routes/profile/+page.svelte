@@ -1,6 +1,10 @@
 <script lang="ts">
 	import { clientApi } from '$lib';
 	import { createQuery } from '@tanstack/svelte-query';
+	import type { PageData } from '../$types';
+
+	let { data }: { data: PageData } = $props();
+
 	const { getProfile } = clientApi();
 	const { queryFn, queryKey } = getProfile;
 	const profile = createQuery({
@@ -27,10 +31,12 @@
 	/>
 {/if}
 
-<form method="POST" action="/auth?/login-discogs">
-	<button type="submit">Login Discogs</button>
-</form>
-
-<form method="POST" action="/auth?/logout-discogs">
-	<button type="submit">Logout</button>
-</form>
+{#if data.oauth_token}
+	<form method="POST" action="/auth?/logout-discogs">
+		<button type="submit">Logout discogs</button>
+	</form>
+{:else}
+	<form method="POST" action="/auth?/login-discogs">
+		<button type="submit">Login Discogs</button>
+	</form>
+{/if}

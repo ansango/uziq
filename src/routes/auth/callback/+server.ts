@@ -20,12 +20,11 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
 	}
 
 	if (prev_oauth_token && prev_oauth_token_secret && verifier) {
-		const response = await authApiMethodsDiscogs.postAccessToken(
-			prev_oauth_token,
-			prev_oauth_token_secret,
+		const { oauth_token, oauth_token_secret } = await authApiMethodsDiscogs.postAccessToken({
+			oauth_token: prev_oauth_token,
+			oauth_token_secret: prev_oauth_token_secret,
 			verifier
-		);
-		const [oauth_token, oauth_token_secret] = response.split('&').map((item) => item.split('=')[1]);
+		});
 		cookies.set('oauth_token_secret', oauth_token_secret, { path: '/' });
 		cookies.set('oauth_token', oauth_token, { path: '/' });
 		redirect(302, '/');
