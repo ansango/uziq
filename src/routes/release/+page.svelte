@@ -30,20 +30,16 @@
 	<p>Loading...</p>
 {:else if $vinyls.isError}
 	<p>Error: {$vinyls.error.message}</p>
+{:else if !$vinyls.data}
+	<p>No vinyls found</p>
 {:else}
-	<h1>Vinyls</h1>
-	<ul>
-		{#if !$vinyls.data}
-			<p>No vinyls found</p>
-		{:else}
-			{#each $vinyls.data.vinyls as vinyl}
-				<li>
-					<a href={`/release/${vinyl.id}`}>
-						{vinyl.title} - {vinyl.artist} - {vinyl.year}
-					</a>
+	<ul class="grid grid-cols-12 gap-1 md:gap-2">
+		{#each $vinyls.data.vinyls as vinyl}
+			<li class="col-span-4 md:col-span-3 lg:col-span-2 2xl:col-span-1">
+				<a href={`/release/${vinyl.id}`}>
 					<img width="256" height="256" src={vinyl.cover_image} alt="thumb" />
-				</li>
-			{/each}
-		{/if}
+				</a>
+			</li>
+		{/each}
 	</ul>
 {/if}

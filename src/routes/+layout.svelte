@@ -11,8 +11,8 @@
 
 <QueryClientProvider client={data.queryClient}>
 	<Header discogsUser={data.discogsUser} lastfmSession={data.lastfmSession} />
-
-	{@render children()}
-
+	<main class="max-w-[1920px] p-5">
+		{@render children()}
+	</main>
 	<SvelteQueryDevtools />
 </QueryClientProvider>

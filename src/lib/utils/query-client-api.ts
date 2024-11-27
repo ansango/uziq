@@ -23,7 +23,7 @@ export const clientApi = (customFetch = fetch) => ({
 		queryFn: (id: string) => fetcher(customFetch)(`/release/${id}`)
 	},
 	postBatchTrackScrobble: {
-		queryKey: (id: string) => ['batch-track-scrobble', id],
+		mutationKey: (id: string) => ['batch-track-scrobble', id],
 		queryFn: (id: string, data: any) =>
 			fetcher(customFetch)(`/release/${id}`, { method: 'POST', body: JSON.stringify(data) })
 	}
