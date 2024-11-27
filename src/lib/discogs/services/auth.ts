@@ -1,13 +1,15 @@
 import { buildAuthHeader, buildUrl, method } from '..';
 import { config } from '../config';
-import { generateNonce, generateTimestamp, parseOauthTokens } from '../utils';
+import { parseOauthTokens } from '../utils';
+import type { AuthApiMethods } from './auth.types';
 
-export const authApiMethods = {
+export const authApiMethods: AuthApiMethods = {
 	getToken: async () => {
-		const nonce = generateNonce();
-		const timestamp = generateTimestamp();
-		const signature = `${config.secret_key}&`;
-		const authorizationHeader = `OAuth oauth_consumer_key="${config.client_key}", oauth_nonce="${nonce}", oauth_signature="${signature}", oauth_signature_method="PLAINTEXT", oauth_timestamp="${timestamp}", oauth_callback="${config.callback_url}"`;
+		const authorizationHeader = buildAuthHeader({
+			signature: `${config.secret_key}&`,
+			extra: { oauth_callback: config.callback_url }
+		});
+
 		const response = await fetch(buildUrl(method.auth.getToken), {
 			method: 'GET',
 			headers: {
@@ -16,6 +18,7 @@ export const authApiMethods = {
 				'User-Agent': 'ansango/1.0'
 			}
 		});
+
 		const [oauth_token, oauth_token_secret] = parseOauthTokens(await response.text());
 		return { oauth_token, oauth_token_secret };
 	},
@@ -24,10 +27,11 @@ export const authApiMethods = {
 		oauth_token_secret: string;
 		verifier: string;
 	}) => {
-		const nonce = generateNonce();
-		const timestamp = generateTimestamp();
-		const signature = `${config.secret_key}&${params.oauth_token_secret}`;
-		const authorizationHeader = `OAuth oauth_consumer_key="${config.client_key}", oauth_nonce="${nonce}", oauth_signature="${signature}", oauth_signature_method="PLAINTEXT", oauth_timestamp="${timestamp}", oauth_token="${params.oauth_token}", oauth_verifier="${params.verifier}"`;
+		const authorizationHeader = buildAuthHeader({
+			signature: `${config.secret_key}&${params.oauth_token_secret}`,
+			extra: { oauth_token: params.oauth_token, oauth_verifier: params.verifier }
+		});
+
 		const response = await fetch(buildUrl(method.auth.postAccessToken), {
 			method: 'POST',
 			headers: {
@@ -49,12 +53,9 @@ export const authApiMethods = {
 		const response = await fetch(buildUrl(method.auth.getIdentity), {
 			method: 'GET',
 			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded',
 				Authorization: buildAuthHeader({
-					nonce: generateNonce(),
-					timestamp: generateTimestamp(),
 					signature: `${config.secret_key}&${oauth_token_secret}`,
-					oauth_token
+					extra: { oauth_token }
 				}),
 				'User-Agent': 'ansango/1.0'
 			}

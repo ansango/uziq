@@ -1,6 +1,5 @@
 import { buildAuthHeader, buildUrl, method } from '..';
 import { config } from '../config';
-import { generateNonce, generateTimestamp } from '../utils';
 
 export const userApiMethods = {
 	getCollectionFolders: async ({
@@ -15,13 +14,36 @@ export const userApiMethods = {
 		const response = await fetch(buildUrl(method.user.getCollectionFolders(username)), {
 			headers: {
 				Authorization: buildAuthHeader({
-					nonce: generateNonce(),
-					timestamp: generateTimestamp(),
 					signature: `${config.secret_key}&${oauth_token_secret}`,
-					oauth_token
+					extra: { oauth_token }
 				})
 			}
 		});
+
+		return response.json();
+	},
+	getCollectionFolderReleases: async ({
+		username,
+		oauth_token,
+		oauth_token_secret,
+		folderId
+	}: {
+		username: string;
+		oauth_token: string;
+		oauth_token_secret: string;
+		folderId: string;
+	}) => {
+		const response = await fetch(
+			buildUrl(method.user.getCollectionFolderReleases(username, folderId)),
+			{
+				headers: {
+					Authorization: buildAuthHeader({
+						signature: `${config.secret_key}&${oauth_token_secret}`,
+						extra: { oauth_token }
+					})
+				}
+			}
+		);
 
 		return response.json();
 	}

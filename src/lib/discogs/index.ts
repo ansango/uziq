@@ -1,4 +1,5 @@
 import { config } from './config';
+import { generateNonce, generateTimestamp } from './utils';
 
 export const buildUrl = (params?: string[]) => {
 	const url = new URL(config.base_url);
@@ -6,17 +7,19 @@ export const buildUrl = (params?: string[]) => {
 };
 
 export const buildAuthHeader = ({
-	nonce,
-	timestamp,
 	signature,
-	oauth_token
+	extra
 }: {
-	nonce: string;
-	timestamp: number;
 	signature: string;
-	oauth_token: string;
+	extra?: { [key: string]: string };
 }) =>
-	`OAuth oauth_consumer_key="${config.client_key}", oauth_nonce="${nonce}", oauth_signature="${signature}", oauth_signature_method="PLAINTEXT", oauth_timestamp="${timestamp}", oauth_token="${oauth_token}"`;
+	`OAuth oauth_consumer_key="${config.client_key}", oauth_nonce="${generateNonce()}", oauth_signature="${signature}", oauth_signature_method="PLAINTEXT", oauth_timestamp="${generateTimestamp()}"${
+		extra
+			? `, ${Object.entries(extra)
+					.map(([key, value]) => `${key}="${value}"`)
+					.join(', ')}`
+			: ''
+	}`;
 
 export const method = {
 	auth: {
@@ -25,6 +28,17 @@ export const method = {
 		getIdentity: ['oauth', 'identity']
 	},
 	user: {
-		getCollectionFolders: (username: string) => ['users', username, 'collection', 'folders']
+		getCollectionFolders: (username: string) => ['users', username, 'collection', 'folders'],
+		getCollectionFolderReleases: (username: string, folderId: string) => [
+			'users',
+			username,
+			'collection',
+			'folders',
+			folderId,
+			'releases'
+		]
+	},
+	release: {
+		getRelease: (releaseId: string) => ['releases', releaseId]
 	}
 };

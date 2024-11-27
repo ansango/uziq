@@ -15,6 +15,7 @@
 
 			<a href="/profile">Profile</a>
 			<a href="/track">Tracks</a>
+			<a href="/vinyls">Vinyls</a>
 		</nav>
 		{#if data.lastfmSession}
 			<form method="POST" action="/auth?/logout">

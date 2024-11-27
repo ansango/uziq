@@ -13,5 +13,9 @@ export const clientApi = (customFetch = fetch) => ({
 		queryKey: ['recent-tracks'],
 		queryFn: () =>
 			fetcher<UserGetRecentTracksResponse['recenttracks']['track']>(customFetch)('/track')
+	},
+	getVinyls: {
+		queryKey: ['vinyls'],
+		queryFn: () => fetcher(customFetch)('/vinyls')
 	}
 });
