@@ -3,6 +3,7 @@ import { QueryClient } from '@tanstack/svelte-query';
 import type { LayoutLoad } from './$types';
 
 export const load: LayoutLoad = async ({ data }) => {
+	const { discogsToken, discogsTokenSecret, discogsUser, lastfmSession, lastfmUser } = data;
 	const queryClient = new QueryClient({
 		defaultOptions: {
 			queries: {
@@ -12,14 +13,15 @@ export const load: LayoutLoad = async ({ data }) => {
 		}
 	});
 
-	queryClient.setQueryData(['session'], {
-		session: data.session,
-		user: data.user
+	queryClient.setQueryData(['lastfm'], {
+		lastfmSession,
+		lastfmUser
 	});
 
 	queryClient.setQueryData(['discogs'], {
-		oauth_token: data.oauth_token,
-		oauth_token_secret: data.oauth_token_secret
+		discogsToken,
+		discogsTokenSecret,
+		discogsUser
 	});
 
 	return { queryClient, ...data };

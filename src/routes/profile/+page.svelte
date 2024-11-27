@@ -31,7 +31,7 @@
 	/>
 {/if}
 
-{#if data.oauth_token}
+{#if data.discogsUser}
 	<form method="POST" action="/auth?/logout-discogs">
 		<button type="submit">Logout discogs</button>
 	</form>
