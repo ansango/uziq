@@ -26,3 +26,11 @@
 		alt="avatar"
 	/>
 {/if}
+
+<form method="POST" action="/auth?/login-discogs">
+	<button type="submit">Login Discogs</button>
+</form>
+
+<form method="POST" action="/auth?/logout-discogs">
+	<button type="submit">Logout</button>
+</form>
