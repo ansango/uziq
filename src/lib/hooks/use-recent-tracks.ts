@@ -1,6 +1,8 @@
-import { clientApi } from '$lib/utils';
+import { useGlobalQueryClient } from '$lib/utils';
 import { createQuery } from '@tanstack/svelte-query';
-const { getRecentTracks } = clientApi();
+
+const { user } = useGlobalQueryClient();
+const { getRecentTracks } = user();
 
 export const useGetRecentTracks = ({
 	limit,

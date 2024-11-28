@@ -1,22 +1,20 @@
-import { DISCOGS_OAUTH_TOKEN, DISCOGS_OAUTH_TOKEN_SECRET, DISCOGS_USER } from '$lib';
 import { userApiMethods } from '$lib/discogs/services';
+import { getUserDiscogsFromCookies } from '$lib/middleware';
 
-import { json, type RequestHandler } from '@sveltejs/kit';
+import { error, json, type RequestHandler } from '@sveltejs/kit';
 
 export const GET: RequestHandler = async ({ cookies }) => {
-	const username = cookies.get(DISCOGS_USER);
-	const oauth_token = cookies.get(DISCOGS_OAUTH_TOKEN);
-	const oauth_token_secret = cookies.get(DISCOGS_OAUTH_TOKEN_SECRET);
+	try {
+		const { oauth_token, oauth_token_secret, username } = getUserDiscogsFromCookies(cookies);
+		const response = await userApiMethods.getCollectionFolderReleases({
+			username,
+			oauth_token,
+			oauth_token_secret,
+			folderId: String(0)
+		});
 
-	if (!username || !oauth_token || !oauth_token_secret) {
-		return json({ error: 'User not found' }, { status: 404 });
+		return json(response, { status: 200 });
+	} catch (err) {
+		return error(500, { message: err.message });
 	}
-	const response = await userApiMethods.getCollectionFolderReleases({
-		username,
-		oauth_token,
-		oauth_token_secret,
-		folderId: String(0)
-	});
-
-	return json(response, { status: 200 });
 };

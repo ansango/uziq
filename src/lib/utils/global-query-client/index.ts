@@ -1,5 +1,5 @@
 import { userQueryClient } from './user';
 
-export const useGlobalQueryClient = {
+export const useGlobalQueryClient = () => ({
 	user: userQueryClient
-};
+});

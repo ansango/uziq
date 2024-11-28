@@ -7,7 +7,7 @@ import {
 	DISCOGS_USER,
 	LASTFM_SESSION,
 	LASTFM_USER
-} from '$lib';
+} from '$lib/middleware';
 
 export const actions = {
 	'lastfm-login': async () => {

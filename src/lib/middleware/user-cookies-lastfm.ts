@@ -1,10 +1,15 @@
-import { LASTFM_USER } from '$lib/constants';
-import { json, type Cookies } from '@sveltejs/kit';
+import { LASTFM_SESSION, LASTFM_USER } from '$lib/middleware';
+import { error, type Cookies } from '@sveltejs/kit';
 
 export const getUserLastfmFromCookies = (cookies: Cookies) => {
 	const user = cookies.get(LASTFM_USER);
+	const session = cookies.get(LASTFM_SESSION);
 	if (!user) {
-		throw json({ error: 'User not found' }, { status: 404 });
+		return error(404, { message: 'User not found' });
 	}
-	return user;
+
+	if (!session) {
+		return error(404, { message: 'Session not found' });
+	}
+	return { user, session };
 };
