@@ -11,7 +11,7 @@ import type {
 	UserGetWeeklyArtistChartResponse,
 	UserGetWeeklyChartListRequest,
 	UserGetWeeklyTrackChartResponse
-} from '$lib/lastfm/services';
+} from '$lib/api/lastfm/services';
 import { fetcher } from '../utils/fetcher';
 
 export const userQueryClient = (customFetch = fetch) => ({

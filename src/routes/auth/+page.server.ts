@@ -1,5 +1,5 @@
 import { LASTFM_API_KEY, LASTFM_AUTH_URL, LASTFM_CALLBACK_URL } from '$env/static/private';
-import { authApiMethods } from '$lib/discogs/services';
+import { authApiMethods } from '$lib/api/discogs/services';
 import { redirect } from '@sveltejs/kit';
 import {
 	DISCOGS_OAUTH_TOKEN,

@@ -1,4 +1,4 @@
-import { userApiMethods } from '$lib/lastfm/services';
+import { userApiMethods } from '$lib/api/lastfm/services';
 import { getUserLastfmFromCookies } from '$lib/middleware';
 import { json, type RequestHandler, error } from '@sveltejs/kit';
 

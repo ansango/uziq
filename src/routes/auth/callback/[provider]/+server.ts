@@ -1,6 +1,6 @@
 import { LASTFM_API_KEY } from '$env/static/private';
-import { authApiMethods } from '$lib/lastfm/services';
-import { authApiMethods as authApiMethodsDiscogs } from '$lib/discogs/services';
+import { authApiMethods } from '$lib/api/lastfm/services';
+import { authApiMethods as authApiMethodsDiscogs } from '$lib/api/discogs/services';
 import { redirect, type RequestHandler } from '@sveltejs/kit';
 import {
 	DISCOGS_OAUTH_TOKEN,

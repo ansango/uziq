@@ -1,5 +1,5 @@
-import { releaseApiMethods } from '$lib/discogs/services/release';
-import { trackApiMethods, type BatchTracksScrobbleRequest } from '$lib/lastfm/services';
+import { releaseApiMethods } from '$lib/api/discogs/services/release';
+import { trackApiMethods, type BatchTracksScrobbleRequest } from '$lib/api/lastfm/services';
 import { getUserDiscogsFromCookies, getUserLastfmFromCookies } from '$lib/middleware';
 import { error, json, type RequestHandler } from '@sveltejs/kit';
 
