@@ -7,7 +7,8 @@ import {
 	DISCOGS_OAUTH_TOKEN_SECRET,
 	DISCOGS_USER,
 	LASTFM_SESSION,
-	LASTFM_USER
+	LASTFM_USER,
+	COOKIE_OPTIONS
 } from '$lib';
 
 export const GET: RequestHandler = async ({ url, cookies, params }) => {
@@ -21,8 +22,8 @@ export const GET: RequestHandler = async ({ url, cookies, params }) => {
 				api_key: LASTFM_API_KEY
 			});
 			const { key, name } = response.session;
-			cookies.set(LASTFM_USER, name, { path: '/' });
-			cookies.set(LASTFM_SESSION, key, { path: '/' });
+			cookies.set(LASTFM_USER, name, COOKIE_OPTIONS);
+			cookies.set(LASTFM_SESSION, key, COOKIE_OPTIONS);
 			redirect(302, '/');
 		}
 	}
@@ -37,15 +38,15 @@ export const GET: RequestHandler = async ({ url, cookies, params }) => {
 				oauth_token_secret: prev_oauth_token_secret,
 				verifier
 			});
-			cookies.set(DISCOGS_OAUTH_TOKEN_SECRET, oauth_token_secret, { path: '/' });
-			cookies.set(DISCOGS_OAUTH_TOKEN, oauth_token, { path: '/' });
+			cookies.set(DISCOGS_OAUTH_TOKEN_SECRET, oauth_token_secret, COOKIE_OPTIONS);
+			cookies.set(DISCOGS_OAUTH_TOKEN, oauth_token, COOKIE_OPTIONS);
 
 			const response = await authApiMethodsDiscogs.getIdentity({
 				oauth_token,
 				oauth_token_secret
 			});
 
-			cookies.set(DISCOGS_USER, response.username, { path: '/' });
+			cookies.set(DISCOGS_USER, response.username, COOKIE_OPTIONS);
 
 			redirect(302, '/');
 		}
