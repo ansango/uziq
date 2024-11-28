@@ -1,10 +1,10 @@
-import { clientApi } from '$lib/utils';
+import { releaseQueryClient } from '$lib/global-query-client/release';
 import { createInfiniteQuery } from '@tanstack/svelte-query';
-const { getReleases } = clientApi();
-export const useInfiniteGetReleases = () =>
+const { getReleases } = releaseQueryClient();
+export const useInfiniteGetReleases = (perPage?: number) =>
 	createInfiniteQuery({
 		queryKey: ['releases'],
-		queryFn: ({ pageParam }) => getReleases.queryFn(String(pageParam)),
+		queryFn: ({ pageParam }) => getReleases.queryFn(String(pageParam), perPage),
 		initialPageParam: 1,
 		getNextPageParam: ({ pagination }) => {
 			return pagination.urls.next ? pagination.page + 1 : undefined;

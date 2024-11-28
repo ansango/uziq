@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { QueryClientProvider } from '@tanstack/svelte-query';
 	import '../app.css';
+	import { QueryClientProvider } from '@tanstack/svelte-query';
 	import { SvelteQueryDevtools } from '@tanstack/svelte-query-devtools';
 	import { type LayoutData } from './$types';
 	import type { Snippet } from 'svelte';

@@ -1,11 +1,11 @@
 <script lang="ts">
-	import { useGlobalQueryClient } from '$lib';
+	import { userQueryClient } from '$lib';
 	import Bars from '$lib/components/icons/animated/bars.svelte';
 	import TrackLoader from '$lib/components/loaders/track.svelte';
 	import { useGetRecentTracks } from '$lib/hooks';
 	import { createQuery } from '@tanstack/svelte-query';
-	const { user } = useGlobalQueryClient();
-	const { getTopArtists, getTopAlbums, getTopTracks } = user();
+
+	const { getTopArtists, getTopAlbums, getTopTracks } = userQueryClient();
 	const artists = createQuery({
 		queryKey: getTopArtists.queryKey,
 		queryFn: getTopArtists.queryFn

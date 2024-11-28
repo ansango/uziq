@@ -1,9 +1,9 @@
-import { clientApi } from '$lib';
+import { userQueryClient } from '$lib';
 import type { PageLoad } from './$types';
 
 export const load: PageLoad = async ({ parent, fetch }) => {
 	const { queryClient } = await parent();
-	const { getRecentTracks } = clientApi(fetch);
+	const { getRecentTracks } = userQueryClient(fetch);
 	const { queryFn, queryKey } = getRecentTracks;
 
 	await queryClient.prefetchQuery({

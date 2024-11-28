@@ -1,9 +1,9 @@
-import { clientApi } from '$lib';
+import { releaseQueryClient } from '$lib/global-query-client/release';
 import type { PageLoad } from './$types';
 
 export const load: PageLoad = async ({ parent, fetch }) => {
 	const { queryClient } = await parent();
-	const { getReleases } = clientApi(fetch);
+	const { getReleases } = releaseQueryClient(fetch);
 	const { queryFn, queryKey } = getReleases;
 
 	await queryClient.prefetchQuery({

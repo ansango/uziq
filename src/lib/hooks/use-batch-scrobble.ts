@@ -1,9 +1,8 @@
-import { clientApi, useGlobalQueryClient } from '$lib/utils';
+import { trackQueryClient, userQueryClient } from '$lib/global-query-client';
 import { createMutation, QueryClient } from '@tanstack/svelte-query';
 
-const { postBatchTrackScrobble } = clientApi();
-const { user } = useGlobalQueryClient();
-const { getRecentTracks } = user();
+const { postBatchTrackScrobble } = trackQueryClient();
+const { getRecentTracks } = userQueryClient();
 
 export const usePostBatchTrack = ({ queryClient, id }: { queryClient: QueryClient; id: string }) =>
 	createMutation({

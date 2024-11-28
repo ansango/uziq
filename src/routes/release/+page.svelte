@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { useInfiniteGetReleases } from '$lib/hooks';
-	const query = useInfiniteGetReleases();
+	const query = useInfiniteGetReleases(12);
 </script>
 
 {#if $query.data}

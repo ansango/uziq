@@ -12,7 +12,7 @@ import type {
 	UserGetWeeklyChartListRequest,
 	UserGetWeeklyTrackChartResponse
 } from '$lib/lastfm/services';
-import { fetcher } from '../fetcher';
+import { fetcher } from '../utils/fetcher';
 
 export const userQueryClient = (customFetch = fetch) => ({
 	getInfo: {
