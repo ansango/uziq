@@ -2,6 +2,7 @@
 	import { clientApi } from '$lib';
 	import { createQuery, createMutation } from '@tanstack/svelte-query';
 	import type { PageData } from './$types';
+	import Svg from '$lib/components/icons/svg.svelte';
 
 	let { data }: { data: PageData } = $props();
 
@@ -45,7 +46,7 @@
 				disabled={$addMutation.status === 'pending'}
 				aria-label="Scrobble"
 			>
-				<svg xmlns="http://www.w3.org/2000/svg" class="size-6 text-neutral-800" viewBox="0 0 24 24">
+				<Svg className="size-6 text-neutral-800">
 					{#if $addMutation.status === 'pending'}
 						<path
 							fill="currentColor"
@@ -68,7 +69,7 @@
 							d="M12 2a10 10 0 0 1 7.38 16.75M12 8v8m4-4H8M2.5 8.875a10 10 0 0 0-.5 3M2.83 16a10 10 0 0 0 2.43 3.4M4.636 5.235a10 10 0 0 1 .891-.857M8.644 21.42a10 10 0 0 0 7.631-.38"
 						/>
 					{/if}
-				</svg>
+				</Svg>
 			</button>
 		</header>
 		<ul class="space-y-2">

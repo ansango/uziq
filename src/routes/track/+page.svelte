@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { createQuery } from '@tanstack/svelte-query';
 	import { clientApi } from '$lib';
+	import Bars from '$lib/components/icons/animated/bars.svelte';
 
 	const {
 		getRecentTracks: { queryFn, queryKey }
@@ -28,16 +29,17 @@
 						{track.artist['#text']}
 					</span>
 					<!-- {track.album['#text']} -->
-					<time class="text-xs text-neutral-600">
-						{track['@attr']?.nowplaying
-							? 'now'
-							: new Intl.DateTimeFormat('en-US', {
-									year: 'numeric',
-									month: 'short',
-									day: '2-digit'
-								}).format(new Date(parseInt(track.date?.uts ?? '0') * 1000))}
+					<time class="inline-flex items-center text-xs text-neutral-600">
+						{#if track['@attr']?.nowplaying}
+							<Bars />
+						{:else}
+							{new Intl.DateTimeFormat('en-US', {
+								year: 'numeric',
+								month: 'short',
+								day: '2-digit'
+							}).format(new Date(parseInt(track.date?.uts ?? '0') * 1000))}
+						{/if}
 					</time>
-					<!-- {track['@attr']?.nowplaying} -->
 				</p>
 			</li>
 		{/each}
