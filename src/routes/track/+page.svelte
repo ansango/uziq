@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { clientApi } from '$lib';
 	import Bars from '$lib/components/icons/animated/bars.svelte';
 	import { useGetRecentTracks } from '$lib/hooks';
 	const tracks = useGetRecentTracks(1000 * 60 * 5, undefined);
