@@ -1,29 +1,18 @@
 <script lang="ts">
-	import { clientApi } from '$lib';
 	import Bars from '$lib/components/icons/animated/bars.svelte';
-	import { createQuery } from '@tanstack/svelte-query';
+	import TrackLoader from '$lib/components/loaders/track.svelte';
+	import { useGetRecentTracks } from '$lib/hooks/use-recent-tracks';
 
-	const {
-		getRecentTracks: { queryFn, queryKey }
-	} = clientApi();
-
-	const time = 1000 * 60 * 3;
-	const tracks = createQuery({
-		queryKey,
-		queryFn,
-		select: (data) => data?.slice(0, 5),
-		staleTime: time,
-		refetchIntervalInBackground: true,
-		refetchInterval: time
-	});
+	const tracks = useGetRecentTracks();
 </script>
 
 <section class="space-y-5">
 	<h2 class="text-2xl font-medium italic tracking-widest">Recent Tracks</h2>
-
-	<ul class="space-y-8">
-		{#if $tracks.isLoading}
-			<p>Loading...</p>
+	<ul class="max-w-sm space-y-8">
+		{#if $tracks.isLoading || !$tracks.data}
+			{#each Array.from({ length: 5 }) as _}
+				<TrackLoader />
+			{/each}
 		{:else if $tracks.isError}
 			<p>Error: {$tracks.error.message}</p>
 		{:else if $tracks.data}
@@ -34,7 +23,6 @@
 						<span class="font-medium italic text-neutral-800">
 							{track.artist['#text']}
 						</span>
-						<!-- {track.album['#text']} -->
 						<time class="inline-flex items-center text-xs text-neutral-600">
 							{#if track['@attr']?.nowplaying}
 								<Bars />
