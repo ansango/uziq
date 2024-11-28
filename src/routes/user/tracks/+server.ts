@@ -4,6 +4,6 @@ import { json, type RequestHandler } from '@sveltejs/kit';
 
 export const GET: RequestHandler = async ({ cookies }) => {
 	const user = getUserLastfmFromCookies(cookies);
-	const response = await userApiMethods.getLovedTracks({ user });
+	const response = await userApiMethods.getTopTracks({ user });
 	return json({ ...response }, { status: 200 });
 };

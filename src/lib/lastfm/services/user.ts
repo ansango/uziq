@@ -152,6 +152,7 @@ export type UserApiMethods = {
 	 * @param {UserGetWeeklyTrackChartRequest} params
 	 * @param {RequestInit} init
 	 * @returns {Promise<UserGetWeeklyTrackChartResponse>}
+	 * https://www.last.fm/api/show/user.getWeeklyTrackChart
 	 */
 	getWeeklyTrackChart: (
 		params: UserGetWeeklyTrackChartRequest,
