@@ -2,7 +2,14 @@
 	import Bars from '$lib/components/icons/animated/bars.svelte';
 	import TrackLoader from '$lib/components/loaders/track.svelte';
 	import { useGetRecentTracks } from '$lib/hooks/use-recent-tracks';
-	const tracks = useGetRecentTracks(1000 * 60 * 3, 5);
+	const tracks = useGetRecentTracks({
+		limit: 5,
+		refetchInterval: 1000 * 60 * 3,
+		refetchIntervalInBackground: true,
+		refetchOnReconnect: true,
+		refetchOnWindowFocus: true,
+		staleTime: 1000 * 60 * 3
+	});
 </script>
 
 <section>

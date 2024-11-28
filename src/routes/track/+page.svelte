@@ -1,7 +1,10 @@
 <script lang="ts">
 	import Bars from '$lib/components/icons/animated/bars.svelte';
 	import { useGetRecentTracks } from '$lib/hooks';
-	const tracks = useGetRecentTracks(1000 * 60 * 5, undefined);
+	const tracks = useGetRecentTracks({
+		staleTime: 1000 * 60 * 5,
+		refetchIntervalInBackground: true
+	});
 </script>
 
 {#if $tracks.isFetching}
