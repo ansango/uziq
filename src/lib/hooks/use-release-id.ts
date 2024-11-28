@@ -8,6 +8,10 @@ export const useGetReleaseById = (id: string) =>
 		queryKey: getRelease.queryKey(id),
 		queryFn: () => getRelease.queryFn(id),
 		enabled: !!id,
-		select: (data) => ({ ...data, artist: data.artists[0].name.replace(/\(\d+\)/g, '').trim() }),
+		select: (data) => ({
+			...data,
+			artist: data.artists[0].name.replace(/\(\d+\)/g, '').trim(),
+			cover: data.images[0].uri
+		}),
 		staleTime: Infinity
 	});

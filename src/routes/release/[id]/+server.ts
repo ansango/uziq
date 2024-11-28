@@ -5,8 +5,12 @@ import { error, json, type RequestHandler } from '@sveltejs/kit';
 
 export const GET: RequestHandler = async ({ params, cookies }) => {
 	try {
-		getUserDiscogsFromCookies(cookies);
-		const release = await releaseApiMethods.getRelease(String(params.id));
+		const { oauth_token, oauth_token_secret } = getUserDiscogsFromCookies(cookies);
+		const release = await releaseApiMethods.getRelease({
+			oauth_token,
+			oauth_token_secret,
+			id: String(params.id)
+		});
 		return json(release, { status: 200 });
 	} catch (err) {
 		error(500, { message: err.message });
