@@ -12,7 +12,7 @@
 		{#if lastfmSession}
 			<a
 				class="font-medium italic tracking-widest hover:underline hover:underline-offset-2"
-				href="/profile">profile</a
+				href="/account">account</a
 			>
 			<a
 				class="font-medium italic tracking-widest hover:underline hover:underline-offset-2"

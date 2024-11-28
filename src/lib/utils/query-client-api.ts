@@ -4,16 +4,18 @@ import type {
 } from '$lib/lastfm/services/user.types';
 import { fetcher } from './fetcher';
 
+// TODO: REFACTOR
+
 export const clientApi = (customFetch = fetch) => ({
 	getProfile: {
 		queryKey: ['profile'],
-		queryFn: () => fetcher<UserGetInfoResponse>(customFetch)('/user/info')
+		queryFn: () => fetcher<UserGetInfoResponse['user']>(customFetch)('/user/info')
 	},
 	getRecentTracks: {
 		queryKey: ['recent-tracks'],
 		queryFn: () =>
 			fetcher<UserGetRecentTracksResponse['recenttracks']['track']>(customFetch)(
-				'/user/recent-tracks'
+				'/user/tracks/recent'
 			)
 	},
 	getReleases: {
@@ -25,6 +27,7 @@ export const clientApi = (customFetch = fetch) => ({
 		queryFn: (id: string) => fetcher(customFetch)(`/release/${id}`)
 	},
 	postBatchTrackScrobble: {
+		// TODO: ADD TYPES (Inlusive Discogs API)
 		mutationKey: (id: string) => ['batch-track-scrobble', id],
 		queryFn: (id: string, data: any) =>
 			fetcher(customFetch)(`/release/${id}`, { method: 'POST', body: JSON.stringify(data) })

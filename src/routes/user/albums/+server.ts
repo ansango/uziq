@@ -7,6 +7,6 @@ export const GET: RequestHandler = async ({ cookies }) => {
 	if (!user) {
 		return json({ error: 'User not found' }, { status: 404 });
 	}
-	const { user: response } = await userApiMethods.getInfo({ user });
-	return json(response, { status: 200 });
+	const response = await userApiMethods.getTopAlbums({ user });
+	return json({ ...response }, { status: 200 });
 };
