@@ -2,7 +2,7 @@
 	import Bars from '$lib/components/icons/animated/bars.svelte';
 	import TrackLoader from '$lib/components/loaders/track.svelte';
 	import { useGetRecentTracks } from '$lib/hooks/use-recent-tracks';
-	const tracks = useGetRecentTracks(1000 * 60 * 30, 5);
+	const tracks = useGetRecentTracks(1000 * 60 * 3, 5);
 </script>
 
 <section class="space-y-5">
