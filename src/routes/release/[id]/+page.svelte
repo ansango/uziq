@@ -55,8 +55,8 @@
 		</header>
 		<ul class="space-y-2">
 			{#each $release.data.tracklist as track}
-				<li class="border-b py-1">
-					{track.title}{track.duration && ` - ${track.duration}`}
+				<li class="flex justify-between border-b py-1">
+					<span class="line-clamp-1">{track.title}</span><span>{track.duration}</span>
 				</li>
 			{/each}
 		</ul>
