@@ -5,6 +5,10 @@
 	const tracks = useGetRecentTracks(1000 * 60 * 3, 5);
 </script>
 
+<section>
+	<h2 class="text-2xl font-medium italic tracking-widest">Top Artists</h2>
+</section>
+
 <section class="space-y-5">
 	<h2 class="text-2xl font-medium italic tracking-widest">Recent Tracks</h2>
 	<ul class="max-w-sm space-y-8">
