@@ -7,7 +7,11 @@ export default {
 	content: ['./src/**/*.{html,js,svelte,ts}'],
 
 	theme: {
-		extend: {}
+		extend: {
+			aspectRatio: {
+				square: '1/1'
+			}
+		}
 	},
 
 	plugins: [typography, containerQueries, aspectRatio]

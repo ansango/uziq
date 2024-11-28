@@ -1,33 +1,55 @@
 <script lang="ts">
-	import { useInfiniteGetReleases } from '$lib/hooks';
+	import { useInfiniteGetReleases, useInfiniteScroll } from '$lib/hooks';
 	const query = useInfiniteGetReleases(12);
+	const infiniteScroll = useInfiniteScroll();
+
+	let elementRef: HTMLElement;
+	$: {
+		if (
+			elementRef &&
+			$query.hasNextPage &&
+			!$query.isLoading &&
+			!$query.isFetchingNextPage &&
+			!$query.isFetching
+		) {
+			infiniteScroll({
+				action: () => {
+					setTimeout(() => $query.fetchNextPage(), 1500);
+				},
+				element: elementRef
+			});
+		}
+	}
 </script>
 
-{#if $query.data}
+<section class="space-y-2">
 	<ul class="grid grid-cols-12 gap-1 md:gap-2">
-		{#each $query.data.pages as { releases }}
-			{#each releases as release}
-				<li class="col-span-4 md:col-span-3 lg:col-span-2 2xl:col-span-1">
-					<a href={`/release/${release.id}`}>
-						<img
-							width="256"
-							height="256"
-							src={release.cover_image}
-							alt={release.title + ' by ' + release.artist}
-						/>
-					</a>
-				</li>
+		{#if $query.data}
+			{#each $query.data.pages as { releases }}
+				{#each releases as release}
+					<li class="col-span-4 md:col-span-3 lg:col-span-2">
+						<a href={`/release/${release.id}`} class="">
+							<img
+								class="aspect-square object-sm w-full rounded-sm object-cover"
+								src={release.cover_image}
+								alt={release.title + ' by ' + release.artist}
+							/>
+						</a>
+					</li>
+				{/each}
 			{/each}
-		{/each}
+		{/if}
 	</ul>
-{/if}
-<button
-	on:click={() => $query.fetchNextPage()}
-	disabled={!$query.hasNextPage || $query.isFetchingNextPage}
->
-	{#if $query.isFetching}
-		Loading more...
-	{:else if $query.hasNextPage}
-		Load More
-	{:else}Nothing more to load{/if}
-</button>
+
+	<div bind:this={elementRef}>
+		{#if $query.isFetching && $query.hasNextPage}
+			<ul class="grid grid-cols-12 gap-1 md:gap-2">
+				{#each new Array(12) as _, i}
+					<li class="col-span-4 md:col-span-3 lg:col-span-2">
+						<div class="aspect-square w-full animate-pulse rounded-sm bg-neutral-300"></div>
+					</li>
+				{/each}
+			</ul>
+		{/if}
+	</div>
+</section>
