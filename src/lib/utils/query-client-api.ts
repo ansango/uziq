@@ -1,11 +1,13 @@
+import type { GetCollectionFolderReleasesResponse } from '$lib/discogs/services';
 import { fetcher } from './fetcher';
 
 // TODO: REFACTOR
 
 export const clientApi = (customFetch = fetch) => ({
 	getReleases: {
-		queryKey: ['releases'],
-		queryFn: () => fetcher(customFetch)('/release')
+		queryKey: (page: string) => ['release', page],
+		queryFn: (page: string) =>
+			fetcher<GetCollectionFolderReleasesResponse>(customFetch)(`/release?page=${page}`)
 	},
 	getRelease: {
 		queryKey: (id: string) => ['release', id],

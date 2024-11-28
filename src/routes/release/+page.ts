@@ -7,7 +7,7 @@ export const load: PageLoad = async ({ parent, fetch }) => {
 	const { queryFn, queryKey } = getReleases;
 
 	await queryClient.prefetchQuery({
-		queryKey,
-		queryFn
+		queryKey: queryKey('1'),
+		queryFn: () => queryFn('1')
 	});
 };

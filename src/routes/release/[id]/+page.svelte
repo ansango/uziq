@@ -1,32 +1,13 @@
 <script lang="ts">
-	import { clientApi } from '$lib';
-	import { createQuery, createMutation } from '@tanstack/svelte-query';
 	import type { PageData } from './$types';
 	import Svg from '$lib/components/icons/svg.svelte';
+	import { useGetReleaseById, usePostBatchTrack } from '$lib/hooks';
 
 	let { data }: { data: PageData } = $props();
+	const { id, queryClient } = data;
 
-	const { getRelease, postBatchTrackScrobble, getRecentTracks } = clientApi();
-	const { queryKey, queryFn } = getRelease;
-	const release = createQuery({
-		queryKey: queryKey(data.id),
-		queryFn: () => queryFn(data.id),
-		enabled: !!data.id,
-		select: (data) => ({ ...data, artist: data.artists[0].name.replace(/\(\d+\)/g, '').trim() })
-	});
-
-	const addMutation = createMutation({
-		mutationKey: postBatchTrackScrobble.mutationKey(data.id),
-		mutationFn: (data: any) =>
-			postBatchTrackScrobble.queryFn(data.id, {
-				tracklist: data.tracklist.map((track) => track.title),
-				artist: data.artist,
-				album: data.title
-			}),
-		onSuccess: () => {
-			data.queryClient.invalidateQueries({ queryKey: getRecentTracks.queryKey });
-		}
-	});
+	const release = useGetReleaseById(id);
+	const addMutation = usePostBatchTrack({ id, queryClient });
 </script>
 
 {#if $release.isFetching}

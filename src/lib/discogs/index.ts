@@ -1,9 +1,16 @@
 import { config } from './config';
 import { generateNonce, generateTimestamp } from './utils';
 
-export const buildUrl = (params?: string[]) => {
-	const url = new URL(config.base_url);
-	return `${url.toString()}${params ? params.join('/') : ''}`;
+export const buildUrl = (params: string[], searchParams?: { [key: string]: string | number }) => {
+	const url = new URL(`${config.base_url}/${params.join('/')}`);
+
+	if (searchParams) {
+		Object.entries(searchParams).forEach(([key, value]) =>
+			url.searchParams.append(key, value.toString())
+		);
+	}
+
+	return url.toString();
 };
 
 export const buildAuthHeader = ({
@@ -28,15 +35,13 @@ export const method = {
 		getIdentity: ['oauth', 'identity']
 	},
 	user: {
-		getCollectionFolders: (username: string) => ['users', username, 'collection', 'folders'],
-		getCollectionFolderReleases: (username: string, folderId: string) => [
-			'users',
-			username,
-			'collection',
-			'folders',
+		getCollectionFolderReleases: ({
 			folderId,
-			'releases'
-		]
+			username
+		}: {
+			username: string;
+			folderId: string;
+		}) => ['users', username, 'collection', 'folders', folderId, 'releases']
 	},
 	release: {
 		getRelease: (releaseId: string) => ['releases', releaseId]
