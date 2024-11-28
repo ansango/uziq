@@ -2,7 +2,7 @@ import { clientApi } from '$lib/utils';
 import { createQuery } from '@tanstack/svelte-query';
 const { getRecentTracks } = clientApi();
 
-export const useGetRecentTracks = (time = 1000 * 60 * 3) => {
+export const useGetRecentTracks = (time?: number, limit?: number) => {
 	return createQuery({
 		queryKey: getRecentTracks.queryKey,
 		queryFn: getRecentTracks.queryFn,
@@ -16,7 +16,7 @@ export const useGetRecentTracks = (time = 1000 * 60 * 3) => {
 						) === index
 					);
 				})
-				.slice(0, 5),
+				.slice(0, undefined === limit ? data.length : limit),
 		staleTime: time,
 		refetchIntervalInBackground: true,
 		refetchInterval: time

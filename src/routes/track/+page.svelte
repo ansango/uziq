@@ -2,15 +2,12 @@
 	import { createQuery } from '@tanstack/svelte-query';
 	import { clientApi } from '$lib';
 	import Bars from '$lib/components/icons/animated/bars.svelte';
+	import { useGetRecentTracks } from '$lib/hooks';
 
 	const {
 		getRecentTracks: { queryFn, queryKey }
 	} = clientApi();
-	const tracks = createQuery({
-		queryKey,
-		queryFn,
-		staleTime: 1000 * 60 * 3
-	});
+	const tracks = useGetRecentTracks(1000 * 60 * 5, undefined);
 </script>
 
 {#if $tracks.isFetching}
