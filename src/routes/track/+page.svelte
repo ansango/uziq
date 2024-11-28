@@ -19,7 +19,6 @@
 					<span class="font-medium italic text-neutral-800">
 						{track.artist['#text']}
 					</span>
-					<!-- {track.album['#text']} -->
 					<time class="inline-flex items-center text-xs text-neutral-600">
 						{#if track['@attr']?.nowplaying}
 							<Bars />
