@@ -11,7 +11,11 @@ export const trackQueryClient = (customFetch = fetch) => ({
 				album: string;
 				tracklist: string[];
 			}
-		) => fetcher(customFetch)(`/release/${id}`, { method: 'POST', body: JSON.stringify(data) })
+		) =>
+			fetcher<boolean>(customFetch)(`/release/${id}`, {
+				method: 'POST',
+				body: JSON.stringify(data)
+			})
 	},
 	postTrackScrobble: {
 		mutationKey: (id: string) => ['track-scrobble', id],

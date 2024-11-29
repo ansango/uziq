@@ -5,11 +5,13 @@
 	import { type LayoutData } from './$types';
 	import type { Snippet } from 'svelte';
 	import Header from '$lib/components/layout/header.svelte';
+	import Toasts from '$lib/components/toast/toasts.svelte';
 
 	let { children, data }: { children: Snippet; data: LayoutData } = $props();
 </script>
 
 <QueryClientProvider client={data.queryClient}>
+	<Toasts />
 	<Header discogsUser={data.discogsUser} lastfmSession={data.lastfmSession} />
 	<main class="max-w-[1920px] space-y-10 p-5">
 		{@render children()}
