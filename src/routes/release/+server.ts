@@ -1,4 +1,4 @@
-import { userApiMethods } from '$lib/api/discogs/services';
+import { releaseApiMethods } from '$lib/api/discogs/services';
 import { getUserDiscogsFromCookies } from '$lib/middleware';
 
 import { error, json, type RequestHandler } from '@sveltejs/kit';
@@ -8,7 +8,7 @@ export const GET: RequestHandler = async ({ cookies, url }) => {
 	const perPage = url.searchParams.get('per_page') || 10;
 	try {
 		const { oauth_token, oauth_token_secret, username } = getUserDiscogsFromCookies(cookies);
-		const response = await userApiMethods.getCollectionFolderReleases(
+		const response = await releaseApiMethods.getCollectionFolderReleases(
 			{
 				username,
 				oauth_token,
