@@ -2,12 +2,18 @@ import { albumApiMethods } from '$lib/api/lastfm/services';
 import { getUserLastfmFromCookies } from '$lib/api/middleware';
 import { error, json, type RequestHandler } from '@sveltejs/kit';
 
-export const GET: RequestHandler = async ({ cookies }) => {
+export const GET: RequestHandler = async ({ cookies, params }) => {
+	const { name: album, artist } = params;
+
+	if (!album || !artist) {
+		return error(400, { message: 'Missing required parameters' });
+	}
+
 	try {
 		const { user: username } = getUserLastfmFromCookies(cookies);
 		const response = await albumApiMethods.getInfo({
-			album: 'The Dark Side of the Moon',
-			artist: 'Pink Floyd',
+			album,
+			artist,
 			username
 		});
 		return json(response.album, { status: 200 });

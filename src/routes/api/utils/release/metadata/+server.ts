@@ -1,5 +1,9 @@
-import { albumApiMethods, artistApiMethods, trackApiMethods } from '$lib/api/lastfm/services';
-import { getUserLastfmFromCookies } from '$lib/api/middleware';
+import {
+	type AlbumGetInfoResponse,
+	type ArtistGetInfoResponse,
+	type TrackGetInfoResponse
+} from '$lib/api/lastfm/services';
+import { parseDuration, unParseDuration } from '$lib/utils';
 import { error, json, type RequestHandler } from '@sveltejs/kit';
 
 export type RequestBody = {
@@ -48,19 +52,7 @@ export type ResponseReleaseMetadata = {
 	};
 };
 
-const formatDuration = (ms: number): string => {
-	const totalSeconds = Math.floor(ms / 1000);
-	const minutes = Math.floor(totalSeconds / 60);
-	const seconds = totalSeconds % 60;
-	return `${minutes}:${seconds.toString().padStart(2, '0')}`;
-};
-
-const unFormatDuration = (duration: string): number => {
-	const [minutes, seconds] = duration.split(':').map(Number);
-	return minutes * 60 * 1000 + seconds * 1000;
-};
-
-export const POST: RequestHandler = async ({ request, cookies }) => {
+export const POST: RequestHandler = async ({ request, fetch }) => {
 	const { artist, album, tracks, cover, year } = (await request.json()) as RequestBody;
 
 	if (!artist || !album || !tracks || !cover) {
@@ -68,42 +60,32 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 	}
 
 	try {
-		const { user: username } = getUserLastfmFromCookies(cookies);
-		const responseArtist = await artistApiMethods.getInfo({
-			artist,
-			user: username
-		});
+		const rawArtist = await fetch('/api/artist/' + artist);
+		const responseArtist = (await rawArtist.json()) as ArtistGetInfoResponse['artist'];
 
 		const artistMetadata = {
-			tags: responseArtist.artist.tags.tag,
-			similars: responseArtist.artist.similar.artist,
-			ontour: responseArtist.artist.ontour,
-			stats: responseArtist.artist.stats
+			tags: responseArtist.tags.tag,
+			similars: responseArtist.similar.artist,
+			ontour: responseArtist.ontour,
+			stats: responseArtist.stats
 		};
-
-		const responseAlbum = await albumApiMethods.getInfo({
-			album,
-			artist,
-			username
-		});
+		const rawAlbum = await fetch('/api/album/' + artist + '/' + album);
+		const responseAlbum = (await rawAlbum.json()) as AlbumGetInfoResponse['album'];
 
 		const responsetracks = await Promise.all(
 			tracks.map(async (track) => {
 				try {
-					const responseTrack = await trackApiMethods.getInfo({
-						track: track.title,
-						artist,
-						username
-					});
-					return responseTrack.track
+					const rawTrack = await fetch('/api/track/' + artist + '/' + track.title);
+					const responseTrack = (await rawTrack.json()) as TrackGetInfoResponse['track'];
+					return responseTrack
 						? {
 								duration:
 									track.duration !== ''
-										? unFormatDuration(track.duration)
-										: parseInt(responseTrack.track.duration),
-								playcount: responseTrack.track.playcount,
+										? unParseDuration(track.duration)
+										: parseInt(responseTrack.duration),
+								playcount: responseTrack.playcount,
 								name: track.title,
-								userplaycount: responseTrack.track.userplaycount
+								userplaycount: responseTrack.userplaycount
 							}
 						: { duration: 0, playcount: 0, userplaycount: 0, name: track.title };
 				} catch (error) {
@@ -122,13 +104,13 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 			cover,
 			year,
 			stats: {
-				playcount: responseAlbum.album.playcount,
-				listeners: responseAlbum.album.listeners,
-				userplaycount: responseAlbum.album.userplaycount
+				playcount: responseAlbum.playcount,
+				listeners: responseAlbum.listeners,
+				userplaycount: responseAlbum.userplaycount
 			},
 
 			tracks: responsetracks.map(({ duration, playcount, name, userplaycount }) => ({
-				duration: formatDuration(duration),
+				duration: parseDuration(duration),
 				playcount,
 				name,
 				userplaycount

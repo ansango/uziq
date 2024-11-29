@@ -5,3 +5,4 @@ export * from './generate-nonce';
 export * from './generate-timestamp';
 export * from './parse-oauth-tokens';
 export * from './parse-artist-discogs';
+export * from './parse-duration';
