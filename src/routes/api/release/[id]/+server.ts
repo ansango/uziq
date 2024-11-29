@@ -3,7 +3,7 @@ import { releaseApiMethods } from '$lib/api/discogs/services';
 import { trackApiMethods } from '$lib/api/lastfm/services';
 import { getUserDiscogsFromCookies, getUserLastfmFromCookies } from '$lib/api/middleware';
 import { error, json, type RequestHandler } from '@sveltejs/kit';
-import type { ResponseReleaseMetadata } from '../../api/utils/release/metadata/+server';
+import type { ResponseReleaseMetadata } from '../../utils/release/metadata/+server';
 
 export const GET: RequestHandler = async ({ params, cookies, fetch }) => {
 	try {

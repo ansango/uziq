@@ -12,7 +12,7 @@ export const trackQueryClient = (customFetch = fetch) => ({
 				tracklist: string[];
 			}
 		) =>
-			fetcher<boolean>(customFetch)(`/release/${id}`, {
+			fetcher<boolean>(customFetch)(`/api/release/${id}`, {
 				method: 'POST',
 				body: JSON.stringify(data)
 			})
@@ -20,9 +20,12 @@ export const trackQueryClient = (customFetch = fetch) => ({
 	postTrackScrobble: {
 		mutationKey: (id: string) => ['track-scrobble', id],
 		queryFn: (id: string, data: Omit<TrackScrobbleRequest, 'sk' | 'timestamp'>) =>
-			fetcher<TrackScrobbleResponse['scrobbles']['scrobble']>(customFetch)(`/release/${id}/track`, {
-				method: 'POST',
-				body: JSON.stringify(data)
-			})
+			fetcher<TrackScrobbleResponse['scrobbles']['scrobble']>(customFetch)(
+				`/api/release/${id}/track`,
+				{
+					method: 'POST',
+					body: JSON.stringify(data)
+				}
+			)
 	}
 });

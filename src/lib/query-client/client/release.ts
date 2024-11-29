@@ -7,11 +7,11 @@ export const releaseQueryClient = (customFetch = fetch) => ({
 		queryKey: (page: string) => ['release', page],
 		queryFn: (page: string, perPage = 10) =>
 			fetcher<GetCollectionFolderReleasesResponse>(customFetch)(
-				`/release?page=${page}&per_page=${perPage}`
+				`/api/release?page=${page}&per_page=${perPage}`
 			)
 	},
 	getRelease: {
 		queryKey: (id: string) => ['release', id],
-		queryFn: (id: string) => fetcher<ResponseReleaseMetadata>(customFetch)(`/release/${id}`)
+		queryFn: (id: string) => fetcher<ResponseReleaseMetadata>(customFetch)(`/api/release/${id}`)
 	}
 });
