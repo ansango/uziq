@@ -17,15 +17,6 @@
 
 <style lang="postcss">
 	section {
-		position: fixed;
-		top: 0;
-		left: 0;
-		right: 0;
-		width: 100%;
-		display: flex;
-		margin-top: 1rem;
-		justify-content: center;
-		flex-direction: column;
-		z-index: 1000;
+		@apply fixed inset-x-0 top-0 z-10 mt-4 flex w-full flex-col justify-center;
 	}
 </style>

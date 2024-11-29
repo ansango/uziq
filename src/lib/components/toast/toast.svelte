@@ -13,10 +13,7 @@
 		children: Snippet;
 	};
 
-	//const dispatch = createEventDispatcher();
 	let { type, dismissible, dismiss, children }: Props = $props();
-	//export let type = 'error';
-	//	export let dismissible = true;
 </script>
 
 <article class={type} role="alert" transition:fade>
@@ -28,7 +25,7 @@
 		<Info />
 	{/if}
 
-	<div class="text">
+	<div class="line-clamp-1">
 		{@render children()}
 	</div>
 
@@ -41,33 +38,19 @@
 
 <style lang="postcss">
 	article {
-		color: white;
-		padding: 0.75rem 1.5rem;
-		border-radius: 0.2rem;
-		display: flex;
-		align-items: center;
-		margin: 0 auto 0.5rem auto;
-		width: 20rem;
+		@apply mx-auto mb-2 mt-0 flex w-80 items-center gap-2 rounded-sm p-3 text-neutral-800;
 	}
 	.error {
-		background: IndianRed;
+		@apply bg-red-200 text-rose-600;
 	}
 	.success {
-		background: MediumSeaGreen;
+		@apply bg-green-200 text-emerald-800;
 	}
 	.info {
-		background: SkyBlue;
+		@apply bg-blue-200 text-sky-800;
 	}
-	.text {
-		margin-left: 1rem;
-	}
+
 	button {
-		color: white;
-		background: transparent;
-		border: 0 none;
-		padding: 0;
-		margin: 0 0 0 auto;
-		line-height: 1;
-		font-size: 1rem;
+		@apply my-0 ml-auto mr-0 border-0 border-none bg-transparent p-0 text-base leading-none;
 	}
 </style>
