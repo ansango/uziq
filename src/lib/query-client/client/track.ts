@@ -1,5 +1,5 @@
 import type { TrackScrobbleRequest, TrackScrobbleResponse } from '$lib/api/lastfm/services';
-import { fetcher } from '../utils/fetcher';
+import { fetcher } from '$lib/utils';
 
 export const trackQueryClient = (customFetch = fetch) => ({
 	postBatchTrackScrobble: {

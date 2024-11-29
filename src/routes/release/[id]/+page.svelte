@@ -1,7 +1,11 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import Svg from '$lib/components/icons/svg.svelte';
-	import { useGetReleaseById, usePostTrackBatchScrobble, usePostTrackScrobble } from '$lib/hooks';
+	import {
+		useGetReleaseById,
+		usePostTrackBatchScrobble,
+		usePostTrackScrobble
+	} from '$lib/query-client';
 
 	let { data }: { data: PageData } = $props();
 	const { id, queryClient } = data;
@@ -20,14 +24,14 @@
 		<header class="space-y-8">
 			<img
 				class="aspect-square rounded-sm object-cover"
-				src={$release.data.cover}
-				alt={$release.data.title + ' by ' + $release.data.artist}
+				src={$release.data?.albumMetadata.cover}
+				alt={$release.data?.album + ' by ' + $release.data?.artist}
 			/>
 			<div class="flex justify-between">
 				<div class="space-y-2">
-					<h1 class="text-2xl">{$release.data.title}</h1>
-					<h2 class="text-xl">{$release.data.artist}</h2>
-					<time class="text-neutral-600">{$release.data.year}</time>
+					<h1 class="text-2xl">{$release.data?.album}</h1>
+					<h2 class="text-xl">{$release.data?.artist}</h2>
+					<time class="text-neutral-600">{$release.data?.albumMetadata}</time>
 				</div>
 				<button
 					onclick={() => $scrobbleBatch.mutate($release.data)}

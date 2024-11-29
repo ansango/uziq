@@ -1,6 +1,6 @@
-import { trackQueryClient, userQueryClient } from '$lib/global-query-client';
 import { addToast } from '$lib/stores';
 import { createMutation, QueryClient } from '@tanstack/svelte-query';
+import { trackQueryClient, userQueryClient } from '../client';
 
 const { postBatchTrackScrobble } = trackQueryClient();
 const { getRecentTracks } = userQueryClient();

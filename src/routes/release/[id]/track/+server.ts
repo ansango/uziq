@@ -1,5 +1,6 @@
-import { generateTimestamp, getUserLastfmFromCookies } from '$lib';
+import { generateTimestamp } from '$lib/utils';
 import { trackApiMethods } from '$lib/api/lastfm/services';
+import { getUserLastfmFromCookies } from '$lib/api/middleware';
 import { error, json, type RequestHandler } from '@sveltejs/kit';
 
 export const POST: RequestHandler = async ({ cookies, request }) => {

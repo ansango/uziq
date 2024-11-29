@@ -1,4 +1,4 @@
-import { DISCOGS_OAUTH_TOKEN, DISCOGS_OAUTH_TOKEN_SECRET, DISCOGS_USER } from '$lib/middleware';
+import { DISCOGS_OAUTH_TOKEN, DISCOGS_OAUTH_TOKEN_SECRET, DISCOGS_USER } from '$lib/api/middleware';
 import { error, type Cookies } from '@sveltejs/kit';
 
 export const getUserDiscogsFromCookies = (cookies: Cookies) => {

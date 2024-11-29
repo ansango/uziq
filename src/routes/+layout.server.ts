@@ -4,7 +4,7 @@ import {
 	DISCOGS_USER,
 	LASTFM_SESSION,
 	LASTFM_USER
-} from '$lib';
+} from '$lib/api/middleware';
 import type { LayoutServerLoad } from './$types';
 
 export const load: LayoutServerLoad = async ({ cookies }) => {

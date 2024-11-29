@@ -1,4 +1,4 @@
-import { LASTFM_SESSION, LASTFM_USER } from '$lib/middleware';
+import { LASTFM_SESSION, LASTFM_USER } from '$lib/api/middleware';
 import { error, type Cookies } from '@sveltejs/kit';
 
 export const getUserLastfmFromCookies = (cookies: Cookies) => {

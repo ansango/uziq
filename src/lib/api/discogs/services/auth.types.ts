@@ -25,9 +25,3 @@ export type AuthGetIdentityResponse = {
 	resource_url: string;
 	consumer_name: string;
 };
-
-export type AuthApiMethods = {
-	getToken: () => Promise<AuthGetTokenResponse>;
-	postAccessToken: (params: AuthPostAccessTokenRequest) => Promise<AuthPostAccessTokenResponse>;
-	getIdentity: (params: AuthGetIdentityRequest) => Promise<AuthGetIdentityResponse>;
-};

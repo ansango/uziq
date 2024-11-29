@@ -1,8 +1,38 @@
 import { parseOauthTokens } from '$lib/utils';
 import { buildAuthHeader, buildUrl, method } from '..';
 import { config } from '../config';
+import type {
+	AuthGetIdentityRequest,
+	AuthGetIdentityResponse,
+	AuthGetTokenResponse,
+	AuthPostAccessTokenRequest,
+	AuthPostAccessTokenResponse
+} from './auth.types';
 
-import type { AuthApiMethods } from './auth.types';
+/**
+ * Defines the methods available for authentication-related operations in the Discogs API.
+ */
+export type AuthApiMethods = {
+	/**
+	 * Requests an OAuth token from the Discogs API.
+	 * @returns A promise that resolves to an AuthGetTokenResponse object.
+	 */
+	getToken: () => Promise<AuthGetTokenResponse>;
+
+	/**
+	 * Posts an access token to the Discogs API.
+	 * @param params - The request payload containing the OAuth token, token secret, and verifier.
+	 * @returns A promise that resolves to an AuthPostAccessTokenResponse object.
+	 */
+	postAccessToken: (params: AuthPostAccessTokenRequest) => Promise<AuthPostAccessTokenResponse>;
+
+	/**
+	 * Gets the identity of the authenticated user from the Discogs API.
+	 * @param params - The request payload containing the OAuth token and token secret.
+	 * @returns A promise that resolves to an AuthGetIdentityResponse object.
+	 */
+	getIdentity: (params: AuthGetIdentityRequest) => Promise<AuthGetIdentityResponse>;
+};
 
 export const authApiMethods: AuthApiMethods = {
 	getToken: async () => {

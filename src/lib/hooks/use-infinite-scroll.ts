@@ -2,6 +2,7 @@ type Params = {
 	action: () => void;
 	element: HTMLElement;
 };
+
 export const useInfiniteScroll = () => (params: Params) => {
 	const { action, element } = params;
 	if (element) {

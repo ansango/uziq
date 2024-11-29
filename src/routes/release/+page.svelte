@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { useInfiniteGetReleases, useInfiniteScroll } from '$lib/hooks';
+	import { useInfiniteScroll } from '$lib/hooks';
+	import { useInfiniteGetReleases } from '$lib/query-client';
 	const query = useInfiniteGetReleases(12);
 	const infiniteScroll = useInfiniteScroll();
 
@@ -30,7 +31,7 @@
 					<li class="col-span-4 md:col-span-3 lg:col-span-2">
 						<a href={`/release/${release.id}`} class="">
 							<img
-								class="aspect-square object-sm w-full rounded-sm object-cover"
+								class="object-sm aspect-square w-full rounded-sm object-cover"
 								src={release.cover_image}
 								alt={release.title + ' by ' + release.artist}
 							/>

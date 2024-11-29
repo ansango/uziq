@@ -1,18 +1,30 @@
-import { generateTimestamp } from '$lib';
-import { releaseApiMethods } from '$lib/api/discogs/services/release';
+import { generateTimestamp, parseArtistDiscogs } from '$lib/utils';
+import { releaseApiMethods } from '$lib/api/discogs/services';
 import { trackApiMethods } from '$lib/api/lastfm/services';
-import { getUserDiscogsFromCookies, getUserLastfmFromCookies } from '$lib/middleware';
+import { getUserDiscogsFromCookies, getUserLastfmFromCookies } from '$lib/api/middleware';
 import { error, json, type RequestHandler } from '@sveltejs/kit';
+import type { ResponseReleaseMetadata } from '../../api/utils/release/metadata/+server';
 
-export const GET: RequestHandler = async ({ params, cookies }) => {
+export const GET: RequestHandler = async ({ params, cookies, fetch }) => {
 	try {
 		const { oauth_token, oauth_token_secret } = getUserDiscogsFromCookies(cookies);
-		const response = await releaseApiMethods.getRelease({
+		const release = await releaseApiMethods.getRelease({
 			oauth_token,
 			oauth_token_secret,
 			id: String(params.id)
 		});
 
+		const raw = await fetch('/api/utils/release/metadata', {
+			method: 'POST',
+			body: JSON.stringify({
+				album: release.title,
+				artist: parseArtistDiscogs(release.artists[0].name),
+				tracks: release.tracklist.map(({ duration, title }) => ({ duration, title })),
+				cover: release.images[0].uri
+			})
+		});
+
+		const response = (await raw.json()) as ResponseReleaseMetadata;
 		return json(response, { status: 200 });
 	} catch (err) {
 		error(500, { message: err.message });

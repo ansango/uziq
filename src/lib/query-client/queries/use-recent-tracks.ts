@@ -1,6 +1,6 @@
 import type { UserGetRecentTracksResponse } from '$lib/api/lastfm/services';
-import { userQueryClient } from '$lib/global-query-client';
 import { createQuery } from '@tanstack/svelte-query';
+import { userQueryClient } from '../client';
 
 const { getRecentTracks } = userQueryClient();
 

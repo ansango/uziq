@@ -9,7 +9,7 @@ import {
 	LASTFM_SESSION,
 	LASTFM_USER,
 	COOKIE_OPTIONS
-} from '$lib/middleware';
+} from '$lib/api/middleware';
 
 export const GET: RequestHandler = async ({ url, cookies, params }) => {
 	const { provider } = params;

@@ -1,4 +1,4 @@
-import { releaseQueryClient } from '$lib/global-query-client/release';
+import { releaseQueryClient } from '$lib/query-client';
 import { createInfiniteQuery } from '@tanstack/svelte-query';
 const { getReleases } = releaseQueryClient();
 export const useInfiniteGetReleases = (perPage?: number) =>

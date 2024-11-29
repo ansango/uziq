@@ -1,4 +1,4 @@
-import { releaseQueryClient } from '$lib/global-query-client/release';
+import { releaseQueryClient } from '$lib/query-client';
 import type { PageLoad } from './$types';
 
 export const load: PageLoad = async ({ parent, fetch }) => {

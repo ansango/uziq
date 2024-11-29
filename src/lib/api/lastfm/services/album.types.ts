@@ -71,11 +71,12 @@ export type Album = {
 	tags: AlbumTag;
 	playcount: Playcount;
 	image: Array<Image>;
-	tracks: AlbumTrack;
+	tracks?: AlbumTrack;
 	url: Url;
 	name: AlbumName;
 	listeners: Listeners;
 	wiki: AlbumWiki;
+	userplaycount?: Playcount;
 };
 
 export type AlbumGetInfoRequest = {

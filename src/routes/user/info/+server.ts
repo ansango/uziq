@@ -1,5 +1,5 @@
 import { userApiMethods } from '$lib/api/lastfm/services';
-import { getUserLastfmFromCookies } from '$lib/middleware';
+import { getUserLastfmFromCookies } from '$lib/api/middleware';
 import { json, type RequestHandler, error } from '@sveltejs/kit';
 
 export const GET: RequestHandler = async ({ cookies }) => {

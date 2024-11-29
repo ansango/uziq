@@ -73,6 +73,7 @@ export type Track = {
 	album: TrackAlbum;
 	topTags: TrackTopTag;
 	wiki: TrackWiki;
+	userplaycount: Playcount;
 };
 
 export type TrackGetInfoRequest = {

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Bars from '$lib/components/icons/animated/bars.svelte';
-	import { useGetRecentTracks } from '$lib/hooks';
+	import { useGetRecentTracks } from '$lib/query-client';
 
 	const tracks = useGetRecentTracks({
 		staleTime: 1000 * 60 * 5,

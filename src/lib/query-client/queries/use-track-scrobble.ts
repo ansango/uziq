@@ -1,7 +1,8 @@
 import type { TrackScrobbleRequest } from '$lib/api/lastfm/services';
-import { trackQueryClient, userQueryClient } from '$lib/global-query-client';
+
 import { addToast } from '$lib/stores';
 import { createMutation, QueryClient } from '@tanstack/svelte-query';
+import { trackQueryClient, userQueryClient } from '../client';
 
 type Params = {
 	queryClient: QueryClient;

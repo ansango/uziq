@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { userQueryClient } from '$lib';
 	import Bars from '$lib/components/icons/animated/bars.svelte';
 	import TrackLoader from '$lib/components/loaders/track.svelte';
-	import { useGetRecentTracks } from '$lib/hooks';
+	import { useGetRecentTracks, userQueryClient } from '$lib/query-client';
+
 	import { createQuery } from '@tanstack/svelte-query';
 
 	const { getTopArtists, getTopAlbums, getTopTracks } = userQueryClient();

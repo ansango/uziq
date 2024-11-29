@@ -1,4 +1,4 @@
-import { userQueryClient } from '$lib';
+import { userQueryClient } from '$lib/query-client';
 import type { PageLoad } from './$types';
 
 export const load: PageLoad = async ({ parent, fetch }) => {

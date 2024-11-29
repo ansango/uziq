@@ -9,8 +9,25 @@ import type {
 	SearchParams
 } from './release.types';
 
+/**
+ * Defines the methods available for interacting with the Release API.
+ */
 type ReleaseApiMethods = {
+	/**
+	 * Retrieves a release based on the provided parameters.
+	 *
+	 * @param params - The parameters required to get the release.
+	 * @returns A promise that resolves to the release response.
+	 */
 	getRelease: (params: GetReleaseRequest) => Promise<GetReleaseResponse>;
+
+	/**
+	 * Retrieves the releases from a specific collection folder.
+	 *
+	 * @param params - The parameters required to get the collection folder releases.
+	 * @param searchParams - Optional search parameters to filter the results.
+	 * @returns A promise that resolves to the collection folder releases response.
+	 */
 	getCollectionFolderReleases: (
 		params: GetCollectionFolderReleasesRequest,
 		searchParams?: SearchParams
