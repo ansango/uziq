@@ -6,7 +6,7 @@ type TrackList = {
 	title: string;
 };
 
-export type Release = {
+export type MappedRelease = {
 	id: number;
 	title: string;
 	artist: string;
@@ -17,7 +17,7 @@ export type Release = {
 	tracklist: TrackList[];
 };
 
-export const mapper = (release: GetReleaseResponse): Release => {
+export const mapper = (release: GetReleaseResponse): MappedRelease => {
 	const { artists, images, id, tracklist, year, country, uri, title } = release;
 	return {
 		id,

@@ -1,8 +1,9 @@
 <script lang="ts">
 	import Svg from '../svg.svelte';
+	let { className }: { className?: string } = $props();
 </script>
 
-<Svg
+<Svg {className}
 	><path
 		fill="none"
 		stroke="currentColor"

@@ -1,8 +1,9 @@
 <script lang="ts">
 	import Svg from '../svg.svelte';
+	let { className }: { className?: string } = $props();
 </script>
 
-<Svg className="ml-0.5 size-3.5"
+<Svg {className}
 	><rect width="2.8" height="12" x="1" y="6" fill="currentColor"
 		><animate
 			attributeName="y"

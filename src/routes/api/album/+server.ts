@@ -3,8 +3,8 @@ import { getUserLastfmFromCookies } from '$lib/api/middleware';
 import { error, json, type RequestHandler } from '@sveltejs/kit';
 import { mapper } from './mapper';
 
-export const GET: RequestHandler = async ({ cookies, params }) => {
-	const { name: album, artist } = params;
+export const POST: RequestHandler = async ({ cookies, request }) => {
+	const { album, artist } = await request.json();
 
 	if (!album || !artist) {
 		return error(400, { message: 'Missing required parameters' });

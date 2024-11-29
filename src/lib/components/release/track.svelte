@@ -29,11 +29,13 @@
 	const queryClient = useQueryClient();
 	const addMutation = createMutation({
 		mutationKey: [artist, title],
-		mutationFn: ({ album, artist, track }: { artist: string; album: string; track: string }) =>
-			fetcher<ResponsePostTrackScrobble>()(`/api/track/scrobble`, {
-				method: 'POST',
-				body: JSON.stringify({ album, artist, track })
-			}),
+		mutationFn: ({ album, artist, track }: { artist: string; album: string; track: string }) => ({
+			requestParams: { album, artist, track }
+		}),
+		// fetcher<ResponsePostTrackScrobble>()(`/api/track/scrobble`, {
+		// 	method: 'POST',
+		// 	body: JSON.stringify({ album, artist, track })
+		// }),
 		onSuccess: ({ requestParams: { artist, track } }) => {
 			addToast({
 				message: `${track} ${artist} scrobbled!`,
@@ -45,7 +47,6 @@
 			queryClient.invalidateQueries({ queryKey: ['track', artist, track] });
 		},
 		onError: (error) => {
-			console.error(error);
 			addToast({
 				message: error.message,
 				type: 'error',

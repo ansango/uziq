@@ -50,7 +50,7 @@
 						</span>
 						<time class="inline-flex items-center text-xs text-neutral-600">
 							{#if track['@attr']?.nowplaying}
-								<Bars />
+								<Bars className="ml-0.5 size-3.5" />
 							{:else}
 								{new Intl.DateTimeFormat('en-US', {
 									year: 'numeric',

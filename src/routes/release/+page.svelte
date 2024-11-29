@@ -15,7 +15,7 @@
 		) {
 			infiniteScroll({
 				action: () => {
-					setTimeout(() => $query.fetchNextPage(), 1500);
+					setTimeout(() => $query.fetchNextPage(), 500);
 				},
 				element: elementRef
 			});

@@ -31,6 +31,7 @@ import type {
 export type ArtistStats = {
 	listeners: Listeners;
 	playcount: Playcount;
+	userplaycount?: Playcount;
 };
 export type ArtistSimilar = {
 	artist: Array<{
