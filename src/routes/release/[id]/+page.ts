@@ -1,15 +1,14 @@
-import { releaseQueryClient } from '$lib/query-client';
+import { fetcher } from '$lib/utils';
+import type { Release } from '../../api/release/[id]/mapper';
 import type { PageLoad } from './$types';
 
-export const load: PageLoad = async ({ parent, fetch, params }) => {
+export const load: PageLoad = async ({ params, parent, fetch }) => {
 	const { queryClient } = await parent();
-	const { getRelease } = releaseQueryClient(fetch);
-	const { queryFn, queryKey } = getRelease;
 	const { id } = params;
 
 	await queryClient.prefetchQuery({
-		queryKey: queryKey(id),
-		queryFn: () => queryFn(id)
+		queryKey: ['release', id],
+		queryFn: () => fetcher<Release>(fetch)(`/api/release/${id}`)
 	});
 
 	return { id };

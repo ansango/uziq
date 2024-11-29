@@ -1,6 +1,7 @@
 import type { GetCollectionFolderReleasesResponse } from '$lib/api/discogs/services';
-import type { ResponseReleaseMetadata } from '../../../routes/api/utils/release/metadata/+server';
+
 import { fetcher } from '$lib/utils';
+import type { Release } from '../../../routes/api/release/[id]/mapper';
 
 export const releaseQueryClient = (customFetch = fetch) => ({
 	getReleases: {
@@ -12,6 +13,6 @@ export const releaseQueryClient = (customFetch = fetch) => ({
 	},
 	getRelease: {
 		queryKey: (id: string) => ['release', id],
-		queryFn: (id: string) => fetcher<ResponseReleaseMetadata>(customFetch)(`/api/release/${id}`)
+		queryFn: (id: string) => fetcher<Release>(customFetch)(`/api/release/${id}`)
 	}
 });

@@ -1,19 +1,25 @@
 <script lang="ts">
 	import { createQuery } from '@tanstack/svelte-query';
 	import Svg from '../icons/svg.svelte';
+	import { fetcher } from '$lib/utils';
+	import type { Track } from '../../../routes/api/track/[artist]/[track]/mapper';
 
-	let { name }: { name: string } = $props();
+	let { name, artist, album }: { name: string; artist: string; album: string } = $props();
 
 	const generateRandomNumber = () => Math.floor(Math.random() * 100);
 
 	const track = createQuery({
-		queryKey: ['track', name],
-		queryFn: () => ({ userplaycount: generateRandomNumber() }),
-		enabled: !!name
+		queryKey: ['track', name, artist, album],
+		queryFn: () => fetcher<Track>()(`/api/track/${artist}/${name}`)
 	});
 </script>
 
 <span class="text-sm italic text-neutral-500">
+	{#if $track.isFetching}
+		Loading...
+	{:else}
+		{$track.data?.userplaycount}
+	{/if}
 	<Svg className="size-4 inline-flex mb-0.5"
 		><g
 			fill="none"
@@ -28,5 +34,4 @@
 			/><path d="M18 12c0 1.7-.7 3.2-1.8 4.2" /></g
 		>
 	</Svg>
-	{$track.data?.userplaycount}
 </span>

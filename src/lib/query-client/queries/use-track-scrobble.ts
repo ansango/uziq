@@ -1,8 +1,9 @@
-import type { TrackScrobbleRequest } from '$lib/api/lastfm/services';
+import type { TrackScrobbleResponse } from '$lib/api/lastfm/services';
 
 import { addToast } from '$lib/stores';
 import { createMutation, QueryClient } from '@tanstack/svelte-query';
 import { trackQueryClient, userQueryClient } from '../client';
+import { fetcher } from '$lib/utils';
 
 type Params = {
 	queryClient: QueryClient;
@@ -12,20 +13,29 @@ type Params = {
 const { postTrackScrobble } = trackQueryClient();
 const { getRecentTracks } = userQueryClient();
 
-export const usePostTrackScrobble = ({ id, queryClient }: Params) =>
-	createMutation({
+export const usePostTrackScrobble = ({ id, queryClient }: Params) => {
+	return createMutation({
 		mutationKey: postTrackScrobble.mutationKey(id),
-		mutationFn: (data: Omit<TrackScrobbleRequest, 'sk' | 'timestamp'>) =>
-			postTrackScrobble.queryFn(id, data),
-		onSuccess: ({ track }) => {
+		mutationFn: ({ album, artist, track }: { artist: string; album: string; track: string }) =>
+			fetcher<{
+				srobble: TrackScrobbleResponse['scrobbles']['scrobble'];
+				requestParams: {
+					artist: string;
+					track: string;
+					album: string;
+				};
+			}>()(`/api/track/${artist}/${track}/?album=${album}`, {
+				method: 'POST'
+			}),
+		onSuccess: ({ requestParams: { album, artist, track } }) => {
 			addToast({
-				message: `${track['#text']} scrobbled!`,
+				message: `${track} scrobbled!`,
 				type: 'success',
 				dismissible: true,
 				timeout: 3000
 			});
 			queryClient.invalidateQueries({ queryKey: getRecentTracks.queryKey });
-			queryClient.invalidateQueries({ queryKey: ['track', track['#text']] });
+			queryClient.invalidateQueries({ queryKey: ['track', track, artist, album] });
 		},
 		onError: () => {
 			addToast({
@@ -36,3 +46,4 @@ export const usePostTrackScrobble = ({ id, queryClient }: Params) =>
 			});
 		}
 	});
+};

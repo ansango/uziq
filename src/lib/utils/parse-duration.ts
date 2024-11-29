@@ -7,5 +7,6 @@ export const parseDuration = (ms: number): string => {
 
 export const unParseDuration = (duration: string): number => {
 	const [minutes, seconds] = duration.split(':').map(Number);
-	return minutes * 60 * 1000 + seconds * 1000;
+	const result = minutes * 60 * 1000 + seconds * 1000;
+	return isNaN(result) ? 0 : result;
 };
