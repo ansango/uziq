@@ -59,10 +59,12 @@
 	let interval = $state(100);
 	let elapsed = $state(0);
 
+	const getRandomMaxNine = () => Math.floor(Math.random() * 9) + 1;
+
 	$effect(() => {
 		if ($track.isFetching) {
 			setInterval(() => {
-				elapsed += 1;
+				elapsed = getRandomMaxNine();
 			}, interval);
 		}
 		return () => clearInterval(interval);
