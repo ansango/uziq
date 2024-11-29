@@ -10,6 +10,7 @@ export type RequestBody = {
 		title: string;
 	}>;
 	cover?: string;
+	year?: string;
 };
 
 export type ResponseReleaseMetadata = {
@@ -31,6 +32,7 @@ export type ResponseReleaseMetadata = {
 	};
 	album: string;
 	albumMetadata: {
+		year?: string;
 		cover: string;
 		stats: {
 			playcount: string;
@@ -53,7 +55,7 @@ const formatDuration = (ms: number): string => {
 };
 
 export const POST: RequestHandler = async ({ request, cookies }) => {
-	const { artist, album, tracks, cover } = (await request.json()) as RequestBody;
+	const { artist, album, tracks, cover, year } = (await request.json()) as RequestBody;
 
 	if (!artist || !album || !tracks || !cover) {
 		return error(400, { message: 'Missing required parameters' });
@@ -87,11 +89,19 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 						artist,
 						username
 					});
-					return responseTrack.track;
+
+					return responseTrack.track
+						? {
+								duration: responseTrack.track.duration,
+								playcount: responseTrack.track.playcount,
+								name: track.title,
+								userplaycount: responseTrack.track.userplaycount
+							}
+						: { duration: 0, playcount: 0, userplaycount: 0, name: track.title };
 				} catch (error) {
 					console.log(error);
 					return {
-						duration: parseInt(track.duration),
+						duration: 0,
 						playcount: 0,
 						name: track.title,
 						userplaycount: 0
@@ -102,6 +112,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 
 		const albumMetadata = {
 			cover,
+			year,
 			stats: {
 				playcount: responseAlbum.album.playcount,
 				listeners: responseAlbum.album.listeners,

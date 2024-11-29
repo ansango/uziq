@@ -1,5 +1,5 @@
 import { releaseApiMethods } from '$lib/api/discogs/services';
-import { getUserDiscogsFromCookies } from '$lib/middleware';
+import { getUserDiscogsFromCookies } from '$lib/api/middleware';
 
 import { error, json, type RequestHandler } from '@sveltejs/kit';
 

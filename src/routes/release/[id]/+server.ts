@@ -13,20 +13,25 @@ export const GET: RequestHandler = async ({ params, cookies, fetch }) => {
 			oauth_token_secret,
 			id: String(params.id)
 		});
+		try {
+			const raw = await fetch('/api/utils/release/metadata', {
+				method: 'POST',
+				body: JSON.stringify({
+					album: release.title,
+					artist: parseArtistDiscogs(release.artists[0].name),
+					tracks: release.tracklist.map(({ duration, title }) => ({ duration, title })),
+					cover: release.images[0].uri,
+					year: release.year
+				})
+			});
 
-		const raw = await fetch('/api/utils/release/metadata', {
-			method: 'POST',
-			body: JSON.stringify({
-				album: release.title,
-				artist: parseArtistDiscogs(release.artists[0].name),
-				tracks: release.tracklist.map(({ duration, title }) => ({ duration, title })),
-				cover: release.images[0].uri
-			})
-		});
-
-		const response = (await raw.json()) as ResponseReleaseMetadata;
-		return json(response, { status: 200 });
+			const response = (await raw.json()) as ResponseReleaseMetadata;
+			return json(response, { status: 200 });
+		} catch (err) {
+			error(500, { message: err.message });
+		}
 	} catch (err) {
+		console.error(err);
 		error(500, { message: err.message });
 	}
 };

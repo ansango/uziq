@@ -17,13 +17,12 @@ export const usePostTrackBatchScrobble = ({ queryClient, id }: Params) =>
 			id: string;
 			artist: string;
 			album: string;
-			tracklist: { title: string }[];
-			title: string;
+			tracklist: { name: string }[];
 		}) =>
 			postBatchTrackScrobble.queryFn(data.id, {
-				tracklist: data.tracklist.map((track) => track.title),
+				tracklist: data.tracklist.map((track) => track.name),
 				artist: data.artist,
-				album: data.title
+				album: data.album
 			}),
 		onSuccess: () => {
 			addToast({
