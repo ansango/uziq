@@ -1,27 +1,46 @@
+import { fetcher } from '$lib/utils';
 import { buildAuthHeader, buildUrl, method } from '..';
 import { config } from '../config';
+import type {
+	GetCollectionFolderReleasesRequest,
+	GetCollectionFolderReleasesResponse,
+	GetReleaseRequest,
+	GetReleaseResponse,
+	SearchParams
+} from './release.types';
 
-type GetReleaseRequest = {
-	oauth_token: string;
-	oauth_token_secret: string;
-	id: string;
+type ReleaseApiMethods = {
+	getRelease: (params: GetReleaseRequest) => Promise<GetReleaseResponse>;
+	getCollectionFolderReleases: (
+		params: GetCollectionFolderReleasesRequest,
+		searchParams?: SearchParams
+	) => Promise<GetCollectionFolderReleasesResponse>;
 };
 
-export const releaseApiMethods = {
-	getRelease: async ({ oauth_token, oauth_token_secret, id }: GetReleaseRequest) => {
-		const response = await fetch(buildUrl(method.release.getRelease(id)), {
+export const releaseApiMethods: ReleaseApiMethods = {
+	getRelease: async ({ oauth_token, oauth_token_secret, id }: GetReleaseRequest) =>
+		fetcher<GetReleaseResponse>()(buildUrl(method.release.getRelease(id)), {
 			headers: {
 				Authorization: buildAuthHeader({
 					signature: `${config.secret_key}&${oauth_token_secret}`,
 					extra: { oauth_token }
 				})
 			}
-		});
+		}),
 
-		if (!response.ok) {
-			throw new Error('Failed to fetch release');
-		}
-
-		return response.json();
-	}
+	getCollectionFolderReleases: async (
+		{ oauth_token, oauth_token_secret, ...params }: GetCollectionFolderReleasesRequest,
+		searchParams?: SearchParams
+	) =>
+		fetcher<GetCollectionFolderReleasesResponse>()(
+			buildUrl(method.user.getCollectionFolderReleases(params), searchParams),
+			{
+				headers: {
+					Authorization: buildAuthHeader({
+						signature: `${config.secret_key}&${oauth_token_secret}`,
+						extra: { oauth_token }
+					})
+				}
+			}
+		)
 };

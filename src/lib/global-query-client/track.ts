@@ -1,10 +1,24 @@
+import type { TrackScrobbleRequest, TrackScrobbleResponse } from '$lib/api/lastfm/services';
 import { fetcher } from '../utils/fetcher';
 
 export const trackQueryClient = (customFetch = fetch) => ({
 	postBatchTrackScrobble: {
-		// TODO: ADD TYPES (Inlusive Discogs API)
 		mutationKey: (id: string) => ['batch-track-scrobble', id],
-		queryFn: (id: string, data: any) =>
-			fetcher(customFetch)(`/release/${id}`, { method: 'POST', body: JSON.stringify(data) })
+		queryFn: (
+			id: string,
+			data: {
+				artist: string;
+				album: string;
+				tracklist: string[];
+			}
+		) => fetcher(customFetch)(`/release/${id}`, { method: 'POST', body: JSON.stringify(data) })
+	},
+	postTrackScrobble: {
+		mutationKey: (id: string) => ['track-scrobble', id],
+		queryFn: (id: string, data: Omit<TrackScrobbleRequest, 'sk' | 'timestamp'>) =>
+			fetcher<TrackScrobbleResponse['scrobbles']['scrobble']>(customFetch)(`/release/${id}/track`, {
+				method: 'POST',
+				body: JSON.stringify(data)
+			})
 	}
 });

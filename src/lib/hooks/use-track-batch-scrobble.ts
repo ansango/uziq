@@ -4,7 +4,12 @@ import { createMutation, QueryClient } from '@tanstack/svelte-query';
 const { postBatchTrackScrobble } = trackQueryClient();
 const { getRecentTracks } = userQueryClient();
 
-export const usePostBatchTrack = ({ queryClient, id }: { queryClient: QueryClient; id: string }) =>
+type Params = {
+	queryClient: QueryClient;
+	id: string;
+};
+
+export const usePostTrackBatchScrobble = ({ queryClient, id }: Params) =>
 	createMutation({
 		mutationKey: postBatchTrackScrobble.mutationKey(id),
 		mutationFn: (data: any) =>

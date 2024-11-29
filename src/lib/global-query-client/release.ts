@@ -1,4 +1,7 @@
-import type { GetCollectionFolderReleasesResponse } from '$lib/api/discogs/services';
+import type {
+	GetCollectionFolderReleasesResponse,
+	GetReleaseResponse
+} from '$lib/api/discogs/services';
 import { fetcher } from '../utils/fetcher';
 
 export const releaseQueryClient = (customFetch = fetch) => ({
@@ -11,6 +14,6 @@ export const releaseQueryClient = (customFetch = fetch) => ({
 	},
 	getRelease: {
 		queryKey: (id: string) => ['release', id],
-		queryFn: (id: string) => fetcher(customFetch)(`/release/${id}`)
+		queryFn: (id: string) => fetcher<GetReleaseResponse>(customFetch)(`/release/${id}`)
 	}
 });

@@ -1,6 +1,7 @@
+import { parseOauthTokens } from '$lib/utils';
 import { buildAuthHeader, buildUrl, method } from '..';
 import { config } from '../config';
-import { parseOauthTokens } from '../utils';
+
 import type { AuthApiMethods } from './auth.types';
 
 export const authApiMethods: AuthApiMethods = {

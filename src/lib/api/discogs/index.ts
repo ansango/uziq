@@ -1,5 +1,5 @@
+import { generateNonce, generateTimestamp } from '$lib/utils';
 import { config } from './config';
-import { generateNonce, generateTimestamp } from './utils';
 
 export const buildUrl = (params: string[], searchParams?: { [key: string]: string | number }) => {
 	const url = new URL(`${config.base_url}/${params.join('/')}`);
