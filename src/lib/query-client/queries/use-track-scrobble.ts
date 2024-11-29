@@ -25,6 +25,7 @@ export const usePostTrackScrobble = ({ id, queryClient }: Params) =>
 				timeout: 3000
 			});
 			queryClient.invalidateQueries({ queryKey: getRecentTracks.queryKey });
+			queryClient.invalidateQueries({ queryKey: ['track', track['#text']] });
 		},
 		onError: () => {
 			addToast({

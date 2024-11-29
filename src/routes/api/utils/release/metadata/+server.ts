@@ -37,6 +37,7 @@ export type ResponseReleaseMetadata = {
 		stats: {
 			playcount: string;
 			listeners: string;
+			userplaycount: string;
 		};
 		tracks: Array<{
 			duration: string;
@@ -52,6 +53,11 @@ const formatDuration = (ms: number): string => {
 	const minutes = Math.floor(totalSeconds / 60);
 	const seconds = totalSeconds % 60;
 	return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+};
+
+const unFormatDuration = (duration: string): number => {
+	const [minutes, seconds] = duration.split(':').map(Number);
+	return minutes * 60 * 1000 + seconds * 1000;
 };
 
 export const POST: RequestHandler = async ({ request, cookies }) => {
@@ -89,10 +95,12 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 						artist,
 						username
 					});
-
 					return responseTrack.track
 						? {
-								duration: responseTrack.track.duration,
+								duration:
+									track.duration !== ''
+										? unFormatDuration(track.duration)
+										: parseInt(responseTrack.track.duration),
 								playcount: responseTrack.track.playcount,
 								name: track.title,
 								userplaycount: responseTrack.track.userplaycount

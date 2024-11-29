@@ -1,10 +1,10 @@
 import { addToast } from '$lib/stores';
 import { createMutation, QueryClient } from '@tanstack/svelte-query';
-import { trackQueryClient, userQueryClient } from '../client';
+import { releaseQueryClient, trackQueryClient, userQueryClient } from '../client';
 
 const { postBatchTrackScrobble } = trackQueryClient();
 const { getRecentTracks } = userQueryClient();
-
+const { getRelease } = releaseQueryClient();
 type Params = {
 	queryClient: QueryClient;
 	id: string;
@@ -31,7 +31,12 @@ export const usePostTrackBatchScrobble = ({ queryClient, id }: Params) =>
 				dismissible: true,
 				timeout: 3000
 			});
-			queryClient.invalidateQueries({ queryKey: getRecentTracks.queryKey });
+			queryClient.invalidateQueries({
+				queryKey: getRecentTracks.queryKey
+			});
+			queryClient.invalidateQueries({
+				queryKey: getRelease.queryKey(id)
+			});
 		},
 		onError: () => {
 			addToast({

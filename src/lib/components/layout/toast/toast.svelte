@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { createEventDispatcher, type Snippet } from 'svelte';
 	import { fade } from 'svelte/transition';
-	import Success from '../icons/lucide/success.svelte';
-	import Error from '../icons/lucide/error.svelte';
-	import Info from '../icons/lucide/info.svelte';
-	import Close from '../icons/lucide/close.svelte';
+	import Success from '../../icons/lucide/success.svelte';
+	import Error from '../../icons/lucide/error.svelte';
+	import Info from '../../icons/lucide/info.svelte';
+	import Close from '../../icons/lucide/close.svelte';
 
 	type Props = {
 		type: 'success' | 'error' | 'info';

@@ -6,6 +6,7 @@
 		usePostTrackBatchScrobble,
 		usePostTrackScrobble
 	} from '$lib/query-client';
+	import TrackCounter from '$lib/components/release/track.counter.svelte';
 
 	let { data }: { data: PageData } = $props();
 	const { id, queryClient } = data;
@@ -27,13 +28,46 @@
 				src={$release.data?.albumMetadata?.cover}
 				alt={$release.data?.album + ' by ' + $release.data?.artist}
 			/>
-			<div class="flex justify-between">
-				<div class="space-y-2">
-					<h1 class="text-2xl">{$release.data?.album}</h1>
+			<div class="flex justify-between gap-2 md:gap-4">
+				<div class="w-full space-y-2">
+					<h1 class="flex items-center justify-between text-2xl">
+						{$release.data?.album}
+						<span>
+							<time class="text-sm italic text-neutral-500"
+								>{$release.data?.albumMetadata.year}</time
+							>
+							<span class="ml-0.5 text-sm italic text-neutral-500"
+								><Svg className="size-4 inline-flex mb-0.5"
+									><g
+										fill="none"
+										stroke="currentColor"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										stroke-width="1.5"
+										><circle cx="12" cy="12" r="10" /><path d="M6 12c0-1.7.7-3.2 1.8-4.2" /><circle
+											cx="12"
+											cy="12"
+											r="2"
+										/><path d="M18 12c0 1.7-.7 3.2-1.8 4.2" /></g
+									>
+								</Svg>
+								played - {$release.data?.albumMetadata.stats.userplaycount}
+							</span>
+						</span>
+					</h1>
 					<h2 class="text-xl">{$release.data?.artist}</h2>
-					<time class="text-neutral-600">{$release.data?.albumMetadata.year}</time>
+					{#if $release.data?.artistMetadata.tags.length > 0}
+						<div class="flex flex-wrap gap-2">
+							{#each $release.data.artistMetadata.tags as tag}
+								<span class="rounded-full bg-neutral-100 px-2 py-1 text-sm text-neutral-800"
+									>{tag.name}</span
+								>
+							{/each}
+						</div>
+					{/if}
 				</div>
 				<button
+					class="mt-2 inline-flex"
 					onclick={() =>
 						$scrobbleBatch.mutate({
 							id,
@@ -79,7 +113,10 @@
 					<li class="flex justify-between border-b py-1">
 						<span class="line-clamp-1">{track.name}</span>
 						<div class="flex items-center gap-2">
-							<span class="text-sm text-neutral-500">{track.duration}</span>
+							{#if track.duration !== '0:00'}
+								<span class="text-sm text-neutral-500">{track.duration}</span>
+							{/if}
+							<TrackCounter name={track.name} />
 							<button
 								onclick={() =>
 									$scrobbleTrack.mutate({

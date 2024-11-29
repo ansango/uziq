@@ -2,7 +2,7 @@ export type Name = string;
 export type Mbid = string;
 export type Url = string;
 export type Playcount = string;
-export type Duration = number;
+export type Duration = string;
 export type Listeners = string;
 export type Position = string;
 
