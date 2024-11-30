@@ -1,5 +1,5 @@
 import { fetcher } from '$lib/utils';
-import type { Release } from '../../api/release/[id]/mapper';
+import type { MappedRelease } from '../../api/release/[id]/mapper';
 import type { PageLoad } from './$types';
 
 export const load: PageLoad = async ({ params, parent, fetch }) => {
@@ -8,7 +8,7 @@ export const load: PageLoad = async ({ params, parent, fetch }) => {
 
 	await queryClient.prefetchQuery({
 		queryKey: ['release', id],
-		queryFn: () => fetcher<Release>(fetch)(`/api/release/${id}`)
+		queryFn: () => fetcher<MappedRelease>(fetch)(`/api/release/${id}`)
 	});
 
 	return { id };

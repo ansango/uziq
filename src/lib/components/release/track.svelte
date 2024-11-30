@@ -22,20 +22,18 @@
 			fetcher<Track>()(`/api/track`, {
 				method: 'POST',
 				body: JSON.stringify({ artist, track: title })
-			}),
-		staleTime: Infinity
+			})
 	});
 
 	const queryClient = useQueryClient();
 	const addMutation = createMutation({
 		mutationKey: [artist, title],
-		mutationFn: ({ album, artist, track }: { artist: string; album: string; track: string }) => ({
-			requestParams: { album, artist, track }
-		}),
-		// fetcher<ResponsePostTrackScrobble>()(`/api/track/scrobble`, {
-		// 	method: 'POST',
-		// 	body: JSON.stringify({ album, artist, track })
-		// }),
+		mutationFn: ({ album, artist, track }: { artist: string; album: string; track: string }) =>
+			fetcher<ResponsePostTrackScrobble>()(`/api/track/scrobble`, {
+				method: 'POST',
+				body: JSON.stringify({ album, artist, track })
+			}),
+
 		onSuccess: ({ requestParams: { artist, track } }) => {
 			addToast({
 				message: `${track} ${artist} scrobbled!`,
@@ -55,40 +53,18 @@
 			});
 		}
 	});
-
-	let interval = $state(100);
-	let elapsed = $state(0);
-
-	const getRandomMaxNine = () => Math.floor(Math.random() * 9) + 1;
-
-	$effect(() => {
-		if ($track.isFetching) {
-			setInterval(() => {
-				elapsed = getRandomMaxNine();
-			}, interval);
-		}
-		return () => clearInterval(interval);
-	});
 </script>
 
 <li>
 	<div class="flex items-center justify-between">
 		<div class="flex items-center space-x-2">
 			<span class="text-sm text-neutral-500">
-				{#if $track.isFetching}
-					{elapsed}:{elapsed}{elapsed}
-				{:else}
-					{duration !== 0 ? parseDuration(duration) : parseDuration($track.data?.duration || 0)}
-				{/if}
+				{duration !== 0 ? parseDuration(duration) : parseDuration($track.data?.duration || 0)}
 			</span>
 			<span class="text-sm text-neutral-500">{title}</span>
 		</div>
 		<div>
-			{#if $track.isFetching}
-				<span class="text-sm text-neutral-500">{elapsed}</span>
-			{:else}
-				<span class="text-sm text-neutral-500">{$track.data?.userplaycount}</span>
-			{/if}
+			<span class="text-sm text-neutral-500">{$track.data?.userplaycount}</span>
 
 			<button
 				class="text-sm text-neutral-500"

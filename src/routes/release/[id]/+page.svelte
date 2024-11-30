@@ -4,8 +4,8 @@
 	import { fetcher } from '$lib/utils';
 	import type { PageData } from './$types';
 	import Track from '$lib/components/release/track.svelte';
-	import type { MappedArtist } from '../../api/artist/[name]/mapper';
-	import type { MappedAlbum } from '../../api/album/[artist]/[name]/mapper';
+	import type { MappedArtist } from '../../api/artist/mapper';
+	import type { MappedAlbum } from '../../api/album/mapper';
 	import { addToast } from '$lib/stores';
 	import ListPlus from '$lib/components/icons/lucide/list-plus.svelte';
 
@@ -13,8 +13,7 @@
 
 	const release = createQuery({
 		queryKey: ['release', data.id],
-		queryFn: () => fetcher<MappedRelease>()(`/api/release/${data.id}`),
-		staleTime: Infinity
+		queryFn: () => fetcher<MappedRelease>()(`/api/release/${data.id}`)
 	});
 
 	const artist = createQuery({
@@ -23,8 +22,7 @@
 			fetcher<MappedArtist>()(`/api/artist`, {
 				method: 'POST',
 				body: JSON.stringify({ artist: $release.data?.artist })
-			}),
-		staleTime: Infinity
+			})
 	});
 
 	const album = createQuery({
@@ -33,8 +31,7 @@
 			fetcher<MappedAlbum>()(`/api/album`, {
 				method: 'POST',
 				body: JSON.stringify({ artist: $release.data?.artist, album: $release.data?.title })
-			}),
-		staleTime: Infinity
+			})
 	});
 	const queryClient = useQueryClient();
 	const batchAlbum = createMutation({
@@ -44,11 +41,11 @@
 			artist: string;
 			album: string;
 			tracklist: { name: string }[];
-		}) => console.log(data),
-		// fetcher<boolean>()(`/api/release/${data.id}`, {
-		// 	method: 'POST',
-		// 	body: JSON.stringify(data)
-		// }),
+		}) =>
+			fetcher<boolean>()(`/api/release/${data.id}`, {
+				method: 'POST',
+				body: JSON.stringify(data)
+			}),
 		onSuccess: () => {
 			addToast({
 				message: 'Album scrobbled!',
@@ -59,7 +56,7 @@
 			queryClient.invalidateQueries({
 				queryKey: ['recent-tracks']
 			});
-			queryClient.invalidateQueries({
+			queryClient.refetchQueries({
 				queryKey: ['track', $release.data?.artist]
 			});
 			queryClient.invalidateQueries({
