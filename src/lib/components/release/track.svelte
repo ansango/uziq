@@ -42,7 +42,10 @@
 				timeout: 3000
 			});
 
-			queryClient.invalidateQueries({ queryKey: ['track', artist, track] });
+			queryClient.invalidateQueries({ queryKey: ['track', artist, track], exact: true });
+			queryClient.invalidateQueries({
+				queryKey: ['album', album]
+			});
 		},
 		onError: (error) => {
 			addToast({
