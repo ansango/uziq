@@ -51,6 +51,7 @@
 
 		onMutate: ({ album }) => {
 			queryClient.cancelQueries({ queryKey: ['album', album] });
+			queryClient.cancelQueries({ queryKey: ['track'] });
 			const previousAlbum = queryClient.getQueryData<MappedAlbum>(['album', album]);
 
 			if (previousAlbum) {

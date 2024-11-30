@@ -6,6 +6,7 @@
 	import { addToast } from '$lib/stores';
 	import type { Track } from '../../../routes/api/track/mapper';
 	import type { ResponsePostTrackScrobble } from '../../../routes/api/track/scrobble/+server';
+	import type { MappedAlbum } from '../../../routes/api/album/mapper';
 
 	type Props = {
 		title: string;
@@ -27,7 +28,7 @@
 
 	const queryClient = useQueryClient();
 	const addMutation = createMutation({
-		mutationKey: [artist, title],
+		mutationKey: ['track', artist, title],
 		mutationFn: ({ album, artist, track }: { artist: string; album: string; track: string }) =>
 			fetcher<ResponsePostTrackScrobble>()(`/api/track/scrobble`, {
 				method: 'POST',
@@ -36,6 +37,7 @@
 
 		onMutate: ({ artist, track }) => {
 			queryClient.cancelQueries({ queryKey: ['track', artist, track] });
+			const previousAlbum = queryClient.getQueryData<MappedAlbum>(['album', album]);
 			const previousTrack = queryClient.getQueryData<Track>(['track', artist, track]);
 			if (previousTrack) {
 				queryClient.setQueryData<Track>(['track', artist, track], {
@@ -43,7 +45,15 @@
 					userplaycount: previousTrack?.userplaycount + 1
 				});
 			}
-			return { previousTrack };
+
+			if (previousAlbum) {
+				queryClient.setQueryData<MappedAlbum>(['album', album], {
+					...previousAlbum,
+					userplays: previousAlbum?.userplays + 1
+				});
+			}
+
+			return { previousTrack, previousAlbum };
 		},
 
 		onSuccess: ({ requestParams: { artist, track } }) => {
@@ -57,6 +67,9 @@
 		onError: (error, variables, context) => {
 			if (context?.previousTrack) {
 				queryClient.setQueryData<Track>(['track', artist, title], context.previousTrack);
+			}
+			if (context?.previousAlbum) {
+				queryClient.setQueryData<MappedAlbum>(['album', album], context.previousAlbum);
 			}
 
 			addToast({

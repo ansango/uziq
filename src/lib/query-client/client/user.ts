@@ -52,7 +52,6 @@ export const userQueryClient = (customFetch = fetch) => ({
 		queryFn: () =>
 			fetcher<UserGetTopAlbumsResponse['topalbums']['album']>(customFetch)('/api/user/albums')
 	},
-
 	getTopTags: {
 		queryKey: ['top-tags'],
 		queryFn: () => fetcher<UserGetTopTagsResponse['toptags']['tag']>(customFetch)('/api/user/tags')

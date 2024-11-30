@@ -6,20 +6,10 @@
 	import { createQuery } from '@tanstack/svelte-query';
 
 	const { getTopArtists, getTopAlbums, getTopTracks } = userQueryClient();
-	const artists = createQuery({
-		queryKey: getTopArtists.queryKey,
-		queryFn: getTopArtists.queryFn
-	});
 
-	const albums = createQuery({
-		queryKey: getTopAlbums.queryKey,
-		queryFn: getTopAlbums.queryFn
-	});
-
-	const tracks = createQuery({
-		queryKey: getTopTracks.queryKey,
-		queryFn: getTopTracks.queryFn
-	});
+	const artists = createQuery(getTopArtists);
+	const albums = createQuery(getTopAlbums);
+	const tracks = createQuery(getTopTracks);
 
 	const recentTracks = useGetRecentTracks({
 		limit: 5,

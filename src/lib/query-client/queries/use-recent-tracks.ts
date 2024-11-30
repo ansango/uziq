@@ -27,8 +27,7 @@ export const useGetRecentTracks = ({
 	duplicates?: boolean;
 }) => {
 	return createQuery({
-		queryKey: getRecentTracks.queryKey,
-		queryFn: getRecentTracks.queryFn,
+		...getRecentTracks,
 		select: (data) =>
 			(!duplicates ? trackUnique(data) : data).slice(0, undefined === limit ? data.length : limit),
 		...rest
