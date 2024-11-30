@@ -18,15 +18,16 @@ export type MappedRelease = {
 };
 
 export const mapper = (release: GetReleaseResponse): MappedRelease => {
-	const { artists, images, id, tracklist, year, country, uri, title } = release;
+	const { artists, id, tracklist, year, country, title, uri } = release;
+
 	return {
 		id,
 		title,
 		artist: parseArtistDiscogs(artists[0].name),
-		cover: images[0].uri,
+		cover: release?.images ? release.images?.[0]?.uri : '',
 		year,
 		country,
-		url: uri,
+		url: uri || '',
 		tracklist: tracklist.map(({ duration, title }) => ({
 			duration: unParseDuration(duration),
 			title

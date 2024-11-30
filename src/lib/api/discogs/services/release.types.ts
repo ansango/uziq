@@ -86,7 +86,7 @@ export interface GetReleaseResponse {
 	status: string;
 	year: number;
 	resource_url: string;
-	uri: string;
+	uri?: string;
 	artists: Artist[];
 	artists_sort: string;
 	labels: Label[];
@@ -114,7 +114,7 @@ export interface GetReleaseResponse {
 	styles: string[];
 	tracklist: Tracklist[];
 	extraartists: Extraartist2[];
-	images: Image[];
+	images?: Image[];
 	thumb: string;
 	estimated_weight: number;
 	blocked_from_sale: boolean;
