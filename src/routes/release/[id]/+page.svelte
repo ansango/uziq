@@ -48,6 +48,19 @@
 				method: 'POST',
 				body: JSON.stringify(data)
 			}),
+
+		onMutate: ({ album }) => {
+			queryClient.cancelQueries({ queryKey: ['album', album] });
+			const previousAlbum = queryClient.getQueryData<MappedAlbum>(['album', album]);
+
+			if (previousAlbum) {
+				queryClient.setQueryData<MappedAlbum>(['album', album], {
+					...previousAlbum,
+					userplays: previousAlbum?.userplays + 1
+				});
+			}
+			return { previousAlbum };
+		},
 		onSuccess: () => {
 			addToast({
 				message: 'Album scrobbled!',
@@ -55,17 +68,15 @@
 				dismissible: true,
 				timeout: 3000
 			});
+
 			queryClient.invalidateQueries({
-				queryKey: ['recent-tracks']
-			});
-			queryClient.invalidateQueries({
-				queryKey: ['track', $release.data?.artist]
-			});
-			queryClient.invalidateQueries({
-				queryKey: ['album', $release.data?.title]
+				queryKey: ['track']
 			});
 		},
-		onError: () => {
+		onError: (error, variables, context) => {
+			if (context?.previousAlbum) {
+				queryClient.setQueryData<MappedAlbum>(['album', data.id], context.previousAlbum);
+			}
 			addToast({
 				message: 'Failed to scrobble album',
 				type: 'error',

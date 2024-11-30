@@ -5,7 +5,7 @@ export type Track = {
 	duration: number;
 	title: string;
 	playcount: string;
-	userplaycount: string;
+	userplaycount: number;
 };
 
 export const mapper = (track: TrackResponse): Track => {
@@ -16,6 +16,6 @@ export const mapper = (track: TrackResponse): Track => {
 		duration: parseInt(duration),
 		title: name,
 		playcount,
-		userplaycount
+		userplaycount: Number(userplaycount || '0')
 	};
 };

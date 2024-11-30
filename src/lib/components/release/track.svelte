@@ -34,6 +34,18 @@
 				body: JSON.stringify({ album, artist, track })
 			}),
 
+		onMutate: ({ artist, track }) => {
+			queryClient.cancelQueries({ queryKey: ['track', artist, track] });
+			const previousTrack = queryClient.getQueryData<Track>(['track', artist, track]);
+			if (previousTrack) {
+				queryClient.setQueryData<Track>(['track', artist, track], {
+					...previousTrack,
+					userplaycount: previousTrack?.userplaycount + 1
+				});
+			}
+			return { previousTrack };
+		},
+
 		onSuccess: ({ requestParams: { artist, track } }) => {
 			addToast({
 				message: `${track} ${artist} scrobbled!`,
@@ -41,13 +53,12 @@
 				dismissible: true,
 				timeout: 3000
 			});
-
-			queryClient.invalidateQueries({ queryKey: ['track', artist, track], exact: true });
-			queryClient.invalidateQueries({
-				queryKey: ['album', album]
-			});
 		},
-		onError: (error) => {
+		onError: (error, variables, context) => {
+			if (context?.previousTrack) {
+				queryClient.setQueryData<Track>(['track', artist, title], context.previousTrack);
+			}
+
 			addToast({
 				message: error.message,
 				type: 'error',

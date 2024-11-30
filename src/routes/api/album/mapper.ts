@@ -19,6 +19,6 @@ export const mapper = (album: AlbumGetInfoResponse['album']): MappedAlbum => {
 		plays: parseInt(playcount),
 		tags: Array.isArray(tags.tag) ? tags?.tag.map((t) => t.name) : [...(tags.tag?.name || '')],
 		url,
-		userplays: parseInt(userplaycount || '0')
+		userplays: Number(userplaycount || '0')
 	};
 };
