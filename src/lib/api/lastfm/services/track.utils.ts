@@ -1,16 +1,13 @@
 import { LASTFM_API_KEY } from '$env/static/private';
 import { generateSignature } from '$lib/utils';
+
 import { method } from '..';
 import { config } from '../config';
 import type { BatchTracksScrobbleRequest, TrackScrobbleRequest } from './track.types';
 
-export const parsePostParamsTrack = ({
-	artist,
-	sk,
-	timestamp,
-	track,
-	album
-}: TrackScrobbleRequest) => {
+export const parsePostParamsTrack = (params: TrackScrobbleRequest) => {
+	const { artist, track, album, timestamp, sk } = params;
+
 	const paramsUrl = { artist, track, timestamp, sk } as TrackScrobbleRequest;
 	if (album) paramsUrl.album = album;
 	const api_sig = generateSignature(

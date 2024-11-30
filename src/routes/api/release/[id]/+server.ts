@@ -24,7 +24,11 @@ export const GET: RequestHandler = async ({ params, cookies }) => {
 export const POST: RequestHandler = async ({ request, cookies }) => {
 	try {
 		const { session: sk } = getUserLastfmFromCookies(cookies);
-		const { artist, tracklist, album } = await request.json();
+		const { artist, tracklist, album } = (await request.json()) as {
+			artist: string;
+			tracklist: { name: string }[];
+			album: string;
+		};
 
 		if (!artist || !tracklist || !album) {
 			return error(400, { message: 'Missing required parameters' });
@@ -32,10 +36,10 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 
 		const response = await trackApiMethods.postBatchTrackScrobble({
 			sk,
-			tracks: tracklist.map((track: string) => ({
+			tracks: tracklist.map(({ name: track }) => ({
 				artist,
 				track,
-				timestamp: generateTimestamp(),
+				timestamp: String(generateTimestamp()),
 				album
 			}))
 		});

@@ -14,6 +14,7 @@ export type ResponsePostTrackScrobble = {
 
 export const POST: RequestHandler = async ({ cookies, request }) => {
 	const { artist, track, album } = await request.json();
+
 	if (!artist || !track || !album) {
 		return error(400, { message: 'Missing required parameters' });
 	}
@@ -27,6 +28,7 @@ export const POST: RequestHandler = async ({ cookies, request }) => {
 			album,
 			timestamp: String(generateTimestamp())
 		});
+
 		return json(
 			{
 				scrobble: response.scrobbles.scrobble,

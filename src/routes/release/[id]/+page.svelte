@@ -58,7 +58,7 @@
 			queryClient.invalidateQueries({
 				queryKey: ['recent-tracks']
 			});
-			queryClient.refetchQueries({
+			queryClient.invalidateQueries({
 				queryKey: ['track', $release.data?.artist]
 			});
 			queryClient.invalidateQueries({
