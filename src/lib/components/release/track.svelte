@@ -55,23 +55,23 @@
 	});
 </script>
 
-<li>
+<li class="border-b border-neutral-200 py-1">
 	<div class="flex items-center justify-between">
 		<div class="flex items-center space-x-2">
 			<span class="text-sm text-neutral-500">
 				{duration !== 0 ? parseDuration(duration) : parseDuration($track.data?.duration || 0)}
 			</span>
-			<span class="text-sm text-neutral-500">{title}</span>
+			<span class=" text-neutral-700">{title}</span>
 		</div>
-		<div>
-			<span class="text-sm text-neutral-500">{$track.data?.userplaycount}</span>
+		<div class="space-x-1">
+			<span class="text-sm text-neutral-600">{$track.data?.userplaycount}</span>
 
 			<button
-				class="text-sm text-neutral-500"
+				class="text-neutral-700"
 				disabled={$addMutation.status === 'pending'}
 				onclick={() => $addMutation.mutate({ artist, album, track: title })}
 			>
-				<Svg className="size-4 inline-flex mb-0.5"
+				<Svg className="size-6 inline-flex mb-0.5"
 					><g
 						fill="none"
 						stroke="currentColor"

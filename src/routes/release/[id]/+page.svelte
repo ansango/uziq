@@ -8,6 +8,8 @@
 	import type { MappedAlbum } from '../../api/album/mapper';
 	import { addToast } from '$lib/stores';
 	import ListPlus from '$lib/components/icons/lucide/list-plus.svelte';
+	import Discogs from '$lib/components/icons/brands/discogs.svelte';
+	import Lastfm from '$lib/components/icons/brands/lastfm.svelte';
 
 	let { data }: { data: PageData } = $props();
 
@@ -75,68 +77,84 @@
 </script>
 
 <article class="max-w-md space-y-8">
-	<header class="space-y-8">
-		<img
-			class="aspect-square rounded-sm object-cover"
-			src={$release.data?.cover}
-			alt={$release.data?.artist + ' - ' + $release.data?.title}
-		/>
+	<header class="space-y-3">
+		<picture>
+			<img
+				class="aspect-square rounded-sm object-cover"
+				src={$release.data?.cover}
+				alt={$release.data?.artist + ' - ' + $release.data?.title}
+			/>
+			<p class="mt-0.5 text-sm italic text-neutral-500">
+				"<author>{$release.data?.artist}</author> - {$release.data?.title}" from {$release.data
+					?.country} realased in
+				<time>{$release.data?.year}</time>
+			</p>
+		</picture>
+
 		<section>
-			<h1>
-				{$release.data?.title}
-				<span>
-					<time>{$release.data?.year}</time>
-					<span>{$release.data?.country}</span>
-				</span>
-			</h1>
-			<section>
-				<h2>{$release.data?.artist}</h2>
-				<a class="block" href={$release.data?.url} target="_blank" rel="noopener noreferrer"
-					>View on Discogs</a
+			<div class="flex items-center justify-between">
+				<h1 class="text-2xl font-medium">
+					{$release.data?.title}
+				</h1>
+				<div class="-mt-0.5 flex items-center gap-2">
+					<a
+						class="text-neutral-700"
+						href={$release.data?.url}
+						target="_blank"
+						rel="noopener noreferrer"><Discogs className="size-6" /></a
+					>
+					<a
+						class="text-neutral-700"
+						href={$artist.data?.url}
+						target="_blank"
+						rel="noopener noreferrer"><Lastfm className="size-7" /></a
+					>
+				</div>
+			</div>
+		</section>
+		<section class="space-y-2">
+			<h2 class="text-xl italic">{$release.data?.artist}</h2>
+
+			<p class="flex flex-wrap gap-2 lowercase">
+				{#each $artist.data?.tags || [] as tag}
+					<span
+						class="rounded-md border bg-neutral-100 px-1.5 py-0.5 text-sm italic text-neutral-700"
+						>#{tag.replaceAll(' ', '-')}</span
+					>
+				{/each}
+			</p>
+		</section>
+		<section class="flex items-end justify-between">
+			<p class="text-sm italic text-neutral-600">
+				you have listened to this album <strong class="font-semibold"
+					>{$album.data?.userplays}</strong
+				> times
+			</p>
+			{#if $release.data}
+				<button
+					type="button"
+					onclick={() =>
+						$batchAlbum.mutate({
+							id: data.id,
+							artist: $release.data.artist,
+							album: $release.data.title,
+							tracklist: $release.data.tracklist.map((track) => ({ name: track.title }))
+						})}
 				>
-				<a class="block" href={$artist.data?.url} target="_blank" rel="noopener noreferrer"
-					>View artist on Lastfm</a
-				>
-				<p class="line-clamp-1 space-x-2 lowercase">
-					{#each $artist.data?.tags || [] as tag}
-						<span>#{tag}</span>
-					{/each}
-				</p>
-				<p class="space-x-2">
+					<ListPlus className="size-7 text-neutral-700" />
+				</button>
+			{/if}
+		</section>
+		<!-- <p class="space-x-2">
 					{#each $artist.data?.similar || [] as similar}
 						<span>{similar}</span>
 					{/each}
-				</p>
-			</section>
-		</section>
+				</p> -->
 	</header>
 
 	<section>
-		{#if $release.data}
-			<button
-				type="button"
-				onclick={() =>
-					$batchAlbum.mutate({
-						id: data.id,
-						artist: $release.data.artist,
-						album: $release.data.title,
-						tracklist: $release.data.tracklist.map((track) => ({ name: track.title }))
-					})}
-			>
-				<ListPlus className="size-6" />
-			</button>
-		{/if}
-	</section>
-
-	<section>
-		<p>
-			global plays - {$album.data?.plays}
-		</p>
-		<p>{data.lastfmUser} plays - {$album.data?.userplays}</p>
-	</section>
-	<section>
 		{#if $release.data?.tracklist}
-			<ul>
+			<ul class="space-y-3">
 				{#each $release.data.tracklist as { title, duration }}
 					<Track {title} {duration} artist={$release.data.artist} album={$release.data.title} />
 				{/each}
