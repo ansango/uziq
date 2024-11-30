@@ -64,9 +64,9 @@
 			<span class="text-sm text-neutral-500">
 				{duration !== 0 ? parseDuration(duration) : parseDuration($track.data?.duration || 0)}
 			</span>
-			<span class=" text-neutral-700">{title}</span>
+			<span class=" line-clamp-1 text-neutral-700">{title}</span>
 		</div>
-		<div class="space-x-1">
+		<div class="flex items-center gap-2">
 			<span class="text-sm text-neutral-600">{$track.data?.userplaycount}</span>
 
 			<button
