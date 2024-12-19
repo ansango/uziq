@@ -24,7 +24,7 @@
 <QueryClientProvider client={data.queryClient}>
 	<Toasts />
 
-	<Header discogsUser={data.discogsUser} lastfmSession={data.lastfmSession} />
+	<Header />
 	<main class="max-w-[1920px] space-y-10 p-5 md:p-10">
 		{@render children()}
 	</main>
