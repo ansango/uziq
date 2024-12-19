@@ -6,6 +6,7 @@
 	import Logout from '../icons/lucide/logout.svelte';
 	import User from '../icons/lucide/user.svelte';
 	import Auth from '../auth/auth.form.svelte';
+	import Wheel from '../icons/animated/wheel.svelte';
 
 	const { getInfo } = userQueryClient();
 	const userInfo = createQuery({ ...getInfo, retry: 0 });
@@ -43,7 +44,9 @@
 	</nav>
 
 	{#if $userInfo.isLoading}
-		<p>Loading...</p>
+		<div class="flex size-8 items-center justify-center rounded-full">
+			<Wheel className="size-5" />
+		</div>
 	{:else if $userInfo.data}
 		<div bind:this={menu} class="relative">
 			<button onclick={() => (show = !show)}>

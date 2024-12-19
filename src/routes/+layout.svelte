@@ -23,10 +23,11 @@
 
 <QueryClientProvider client={data.queryClient}>
 	<Toasts />
-
-	<Header />
-	<main class="max-w-[1920px] space-y-10 p-5 md:p-10">
-		{@render children()}
-	</main>
+	<div class="flex h-svh flex-col">
+		<Header />
+		<main class="max-w-[1920px] flex-1 space-y-10 p-5 md:p-10">
+			{@render children()}
+		</main>
+	</div>
 	<SvelteQueryDevtools />
 </QueryClientProvider>
