@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Uziq is a web application built with Svelte 5, Svelkit, TypeScript, TailwindCSS, and TanStack Query. The primary function of this application is to scrobble vinyl records from your Discogs account to Last.fm, utilizing a double authentication process for secure data exchange.
+Uziq is a web application built with Svelte 5, Svelkit, Typescript, Tailwindcss, and Tanstack Query. The primary function of this application is to scrobble vinyl records from your Discogs account to Last.fm, utilizing a double authentication process for secure data exchange.
 
 ## Configuration
 
