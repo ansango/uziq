@@ -1,4 +1,4 @@
-# Uziq Application
+# Uziq - Vinyl Scrobbler
 
 ## Introduction
 
