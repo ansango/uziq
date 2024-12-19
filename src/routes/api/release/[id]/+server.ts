@@ -16,7 +16,6 @@ export const GET: RequestHandler = async ({ params, cookies }) => {
 		});
 		return json(mapper(release), { status: 200 });
 	} catch (err) {
-		console.error(err);
 		error(500, { message: err.message });
 	}
 };

@@ -46,8 +46,6 @@
 			const previousAlbum = queryClient.getQueryData<MappedAlbum>(['album', album]);
 			const previousTracks = queryClient.getQueriesData({ queryKey: ['track'] });
 
-			console.log(previousTracks);
-
 			if (previousAlbum) {
 				queryClient.setQueryData<MappedAlbum>(['album', album], {
 					...previousAlbum,
@@ -142,10 +140,9 @@
 					type="button"
 					onclick={() =>
 						$batchAlbum.mutate({
-							id: data.id,
 							artist: $release.data.artist,
 							album: $release.data.title,
-							tracklist: $release.data.tracklist.map((track) => ({ name: track.title }))
+							tracklist: $release.data.tracklist.map((track) => track.title)
 						})}
 				>
 					<ListPlus className="size-7 text-neutral-700" />

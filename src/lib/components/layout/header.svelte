@@ -6,15 +6,16 @@
 	import Logout from '../icons/lucide/logout.svelte';
 	import User from '../icons/lucide/user.svelte';
 	import Auth from '../auth/auth.form.svelte';
+
 	const { getInfo } = userQueryClient();
 	const userInfo = createQuery({ ...getInfo, retry: 0 });
 
+	let menu = $state(null as unknown as HTMLDivElement);
 	let show = $state(false);
-	let menu = $state(null as HTMLDivElement | null);
 
 	onMount(() => {
 		const handleOutsideClick = (event: MouseEvent) => {
-			// @ts-expect-error
+			// @ts-expect-error - TS doesn't know about contains
 			if (show && !menu.contains(event.target)) {
 				show = false;
 			}
