@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Auth from '$lib/components/auth/auth.form.svelte';
-
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
