@@ -10,9 +10,11 @@
 	import ListPlus from '$lib/components/icons/lucide/list-plus.svelte';
 	import Discogs from '$lib/components/icons/brands/discogs.svelte';
 	import Lastfm from '$lib/components/icons/brands/lastfm.svelte';
+	import { trackQueryClient } from '$lib/query-client';
 
 	let { data }: { data: PageData } = $props();
-
+	const { postBatchTrackScrobble } = trackQueryClient();
+	const queryClient = useQueryClient();
 	const release = createQuery({
 		queryKey: ['release', data.id],
 		queryFn: () => fetcher<MappedRelease>()(`/api/release/${data.id}`)
@@ -35,24 +37,16 @@
 				body: JSON.stringify({ artist: $release.data?.artist, album: $release.data?.title })
 			})
 	});
-	const queryClient = useQueryClient();
-	const batchAlbum = createMutation({
-		mutationKey: ['album', data.id],
-		mutationFn: (data: {
-			id: string;
-			artist: string;
-			album: string;
-			tracklist: { name: string }[];
-		}) =>
-			fetcher<boolean>()(`/api/release/${data.id}`, {
-				method: 'POST',
-				body: JSON.stringify(data)
-			}),
 
-		onMutate: ({ album }) => {
+	const batchAlbum = createMutation({
+		...postBatchTrackScrobble(data.id),
+		onMutate: async ({ album, tracklist, artist }) => {
 			queryClient.cancelQueries({ queryKey: ['album', album] });
 			queryClient.cancelQueries({ queryKey: ['track'] });
 			const previousAlbum = queryClient.getQueryData<MappedAlbum>(['album', album]);
+			const previousTracks = queryClient.getQueriesData({ queryKey: ['track'] });
+
+			console.log(previousTracks);
 
 			if (previousAlbum) {
 				queryClient.setQueryData<MappedAlbum>(['album', album], {
@@ -60,7 +54,8 @@
 					userplays: previousAlbum?.userplays + 1
 				});
 			}
-			return { previousAlbum };
+
+			return { previousAlbum, previousTracks };
 		},
 		onSuccess: () => {
 			addToast({

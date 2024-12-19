@@ -24,7 +24,11 @@ export const GET: RequestHandler = async ({ url, cookies, params }) => {
 			const { key, name } = response.session;
 			cookies.set(LASTFM_USER, name, COOKIE_OPTIONS);
 			cookies.set(LASTFM_SESSION, key, COOKIE_OPTIONS);
-			redirect(302, '/');
+
+			const { oauth_token, oauth_token_secret } = await authApiMethodsDiscogs.getToken();
+			cookies.set(DISCOGS_OAUTH_TOKEN_SECRET, oauth_token_secret, { path: '/' });
+			cookies.set(DISCOGS_OAUTH_TOKEN, oauth_token, { path: '/' });
+			redirect(302, `https://discogs.com/oauth/authorize?oauth_token=${oauth_token}`);
 		}
 	}
 
@@ -40,7 +44,6 @@ export const GET: RequestHandler = async ({ url, cookies, params }) => {
 			});
 			cookies.set(DISCOGS_OAUTH_TOKEN_SECRET, oauth_token_secret, COOKIE_OPTIONS);
 			cookies.set(DISCOGS_OAUTH_TOKEN, oauth_token, COOKIE_OPTIONS);
-
 			const response = await authApiMethodsDiscogs.getIdentity({
 				oauth_token,
 				oauth_token_secret

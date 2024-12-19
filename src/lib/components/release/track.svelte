@@ -7,6 +7,7 @@
 	import type { Track } from '../../../routes/api/track/mapper';
 	import type { ResponsePostTrackScrobble } from '../../../routes/api/track/scrobble/+server';
 	import type { MappedAlbum } from '../../../routes/api/album/mapper';
+	import { trackQueryClient } from '$lib/query-client';
 
 	type Props = {
 		title: string;
@@ -14,27 +15,15 @@
 		artist: string;
 		album: string;
 	};
-
+	const { getTrack, postTrackScrobble } = trackQueryClient();
 	let { duration, title, artist, album }: Props = $props();
 
-	const track = createQuery({
-		queryKey: ['track', artist, title],
-		queryFn: () =>
-			fetcher<Track>()(`/api/track`, {
-				method: 'POST',
-				body: JSON.stringify({ artist, track: title })
-			})
-	});
+	const track = createQuery(getTrack({ artist, track: title }));
 
 	const queryClient = useQueryClient();
-	const addMutation = createMutation({
-		mutationKey: ['track', artist, title],
-		mutationFn: ({ album, artist, track }: { artist: string; album: string; track: string }) =>
-			fetcher<ResponsePostTrackScrobble>()(`/api/track/scrobble`, {
-				method: 'POST',
-				body: JSON.stringify({ album, artist, track })
-			}),
 
+	const addMutation = createMutation({
+		...postTrackScrobble({ artist, track: title }),
 		onMutate: ({ artist, track }) => {
 			queryClient.cancelQueries({ queryKey: ['track', artist, track] });
 			const previousAlbum = queryClient.getQueryData<MappedAlbum>(['album', album]);

@@ -1,14 +1,10 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 
-	let {
-		children,
-		action,
-		provider
-	}: { children: Snippet; action: 'login' | 'logout'; provider: 'lastfm' | 'discogs' } = $props();
+	let { children, action }: { children: Snippet; action: 'login' | 'logout' } = $props();
 </script>
 
-<form method="POST" action={`/auth?/${provider}-${action}`}>
+<form method="POST" action={`/auth?/${action}`}>
 	<button type="submit" aria-label={action}>
 		{@render children()}
 	</button>
