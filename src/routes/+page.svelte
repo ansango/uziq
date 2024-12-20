@@ -5,7 +5,8 @@
 	const infiniteScroll = useInfiniteScroll();
 
 	let elementRef: HTMLElement;
-	$: {
+
+	$effect(() => {
 		if (
 			elementRef &&
 			$query.hasNextPage &&
@@ -20,7 +21,7 @@
 				element: elementRef
 			});
 		}
-	}
+	});
 </script>
 
 <section class="space-y-2">
